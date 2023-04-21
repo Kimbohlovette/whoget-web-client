@@ -3,7 +3,7 @@ import React from 'react';
 
 const SideBar = () => {
 	return (
-		<div className="px-4 h-full min-w-[200px] border-r text-indigo-950">
+		<div className="px-4 h-full min-w-[200px] text-indigo-950">
 			<div>
                 <h1 className="text-2xl py-4">WhoGet</h1>
 			</div>
