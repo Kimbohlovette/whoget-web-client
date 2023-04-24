@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import storage from '../fbConfig';
 import { getDownloadURL, ref } from 'firebase/storage';
+import Link from 'next/link';
 
 const asks = () => {
 	return (
@@ -11,6 +12,23 @@ const asks = () => {
 				<User user={''} />
 				<User user={''} />
 				<User user={''} />
+			</div>
+			<div className="flex justify-center items-center my-5">
+				<div className="flex flex-row gap-4">
+					<button className="text-slate-600 hover:underline">Prev</button>
+					<ul className="flex flex-row gap-5 [&>*_li]:rounded-sm [&>*_li:active]:text-secondary [&>*_li]:p-2">
+						<Link href={'#'}>
+							<li className="text-secondary">1</li>
+						</Link>
+						<Link href={'#'}>
+							<li>2</li>
+						</Link>
+						<Link href={'#'}>
+							<li>3</li>
+						</Link>
+					</ul>
+					<button className="text-slate-600 hover:underline">Next</button>
+				</div>
 			</div>
 		</div>
 	);
