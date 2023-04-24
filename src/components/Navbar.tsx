@@ -14,6 +14,7 @@ const Navbar = () => {
 			<div className="flex-1 flex flex-row items-center gap-4">
 				<div className="relative">
 					<button
+					className="sm:hidden"
 						onClick={() => {
 							setShowDropdownMenu((state) => !state);
 						}}
@@ -41,7 +42,7 @@ const Navbar = () => {
 						</div>
 					)}
 				</div>
-				<div className="flex justify-start items-center flex-1 gap-2 border border-primary bg-white rounded-sm">
+				<div className="flex justify-start items-center flex-1 gap-2 border bg-white rounded-sm">
 					<HiOutlineMagnifyingGlass className="ml-4" />
 					<input
 						type="search"
@@ -59,14 +60,16 @@ const Navbar = () => {
 					<AiOutlineUser className="text-2xl" />
 				</button>
 				{showProfile && (
-					<div className="bg-white px-8 py-5 border rounded-md absolute top-10 right-0 min-w-max">
-						<nav className="py-4">
+					<div className="bg-white px-8 py-5 border absolute top-10 right-0 min-w-max">
+						<nav className="py-4 text-primary font-bold">
 							<ul className="flex flex-col gap-4">
 								<Link
 									href={'/'}
 									className="active:font-semibold"
 								>
-									<li>Your profile</li>
+									<li className="text-primary font-bold">
+										Your profile
+									</li>
 								</Link>
 								<Link href={'/users'}>
 									<li>Notifications</li>

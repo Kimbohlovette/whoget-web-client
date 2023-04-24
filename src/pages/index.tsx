@@ -41,7 +41,7 @@ const Card = (props: {
 	icon: ReactNode;
 }) => {
 	return (
-		<div className="card bg-white p-8 shadow-inner ">
+		<div className="card bg-white p-8 shadow-sm rounded-sm">
 			<div className="flex flex-row">
 				<div className="w-1/4 text-orange-600 text-3xl flex justify-center py-5">
 					{props.icon}
