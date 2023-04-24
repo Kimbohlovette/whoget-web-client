@@ -17,6 +17,9 @@ module.exports = {
 				secondary: '#ef7215',
 				tetiary: '#00ffef',
 			},
+			fontFamily: {
+				popkins: ['Popkins', 'sans-serif'],
+			},
 		},
 	},
 	plugins: [],
