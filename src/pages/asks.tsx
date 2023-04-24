@@ -9,9 +9,9 @@ const asks = () => {
 	return (
 		<div>
 			<div className="user-cards flex flex-col gap-y-4">
-				<User user={''} />
-				<User user={''} />
-				<User user={''} />
+				<Ask ask={''} />
+				<Ask ask={''} />
+				<Ask ask={''} />
 			</div>
 			<div className="flex justify-center items-center my-5">
 				<div className="flex flex-row gap-4">
@@ -36,7 +36,7 @@ const asks = () => {
 
 export default asks;
 
-const User = (props: { user: any }) => {
+const Ask = (props: { ask: any }) => {
 	const [carUrl, setCarUrl] = useState('');
 	const carRef = ref(storage, 'images/car1.jpg');
 
