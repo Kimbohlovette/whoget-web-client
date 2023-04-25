@@ -15,7 +15,9 @@ const asks = () => {
 			</div>
 			<div className="flex justify-center items-center my-5">
 				<div className="flex flex-row gap-4">
-					<button className="text-slate-600 hover:underline">Prev</button>
+					<button className="text-slate-600 hover:underline">
+						Prev
+					</button>
 					<ul className="flex flex-row gap-5 [&>*_li]:rounded-sm [&>*_li:active]:text-secondary [&>*_li]:p-2">
 						<Link href={'#'}>
 							<li className="text-secondary">1</li>
@@ -27,7 +29,9 @@ const asks = () => {
 							<li>3</li>
 						</Link>
 					</ul>
-					<button className="text-slate-600 hover:underline">Next</button>
+					<button className="text-slate-600 hover:underline">
+						Next
+					</button>
 				</div>
 			</div>
 		</div>
@@ -62,8 +66,8 @@ const Ask = (props: { ask: any }) => {
 
 	return (
 		<div className="p-8 rounded-md bg-white hover:bg-indigo-100">
-			<div className="flex justify-start items-start gap-3 pt-4">
-				<div className="border overflow-hidden rounded-full">
+			<div className="flex flex-row gap-4">
+				<div className="border overflow-hidden rounded-full h-fit">
 					<Image
 						src={avatarUrl}
 						height={50}
@@ -73,45 +77,56 @@ const Ask = (props: { ask: any }) => {
 					/>
 				</div>
 				<div>
-					<h1 className="font-semibold text-primary">
-						Kimboh Lovette
-					</h1>
-					<p className="text-slate-600 text-sm">
-						I need Google Pixel 4X 128GB to truck with my Samsung
-						Note 22 and add cash.
-					</p>
-				</div>
-			</div>
+					<div>
+						<h1 className="font-light text-slate-400s">
+							Kimboh Lovette
+						</h1>
+						<p className="text-slate-600 text-sm">
+							I need Google Pixel 4X 128GB to truck with my
+							Samsung Note 22 and add cash.
+						</p>
+					</div>
 
-			<div className="relative px-5 py-4 mt-5 w-fit flex flex-row gap-2">
-				{carUrl !== '' && (
-					<Image
-						src={carUrl}
-						alt="Car needed"
-						width={200}
-						height={100}
-						className="aspect-video w-full max-w-xs border rounded-sm"
-					/>
-				)}
-				<button className="absolute -left-4 top-1/2 rounded-full hover:bg-slate-200 p-1 shadow-inner">
-					<HiChevronLeft className="text-2xl text-slate-500" />
-				</button>
-				<button className="absolute -right-4 top-1/2 rounded-full hover:bg-slate-200 p-1">
-					<HiChevronRight className="text-2xl text-slate-500" />
-				</button>
-			</div>
-			<div className="flex flex-row gap-x-8 text-sm">
-				<div className="text-slate-600 font-light">
-					<span>Location</span>
+					<div className="relative py-4 mt-5 w-fit flex flex-row gap-2">
+						{carUrl !== '' && (
+							<Image
+								src={carUrl}
+								alt="Car needed"
+								width={100}
+								height={100}
+								className="aspect-[6/4] border rounded-sm h-32 w-auto"
+							/>
+						)}
+						{carUrl !== '' && (
+							<Image
+								src={carUrl}
+								alt="Car needed"
+								width={100}
+								height={100}
+								className="aspect-[6/4] border rounded-sm h-32 w-auto"
+							/>
+						)}
+						<button className="absolute -left-12 top-1/3 rounded-full hover:bg-slate-200 p-1">
+							<HiChevronLeft className="text-2xl text-slate-500" />
+						</button>
+						<button className="absolute -right-12 top-1/3 rounded-full hover:bg-slate-200 p-1">
+							<HiChevronRight className="text-2xl text-slate-500" />
+						</button>
+					</div>
+					<div className="flex flex-row gap-x-8 text-sm">
+						<div className="text-slate-600 font-extralight">
+							<span>Location</span>
+						</div>
+						<div className="font-semibold text-slate-700">
+							<span>Yaounde</span>
+						</div>
+					</div>
+					<div className="py-4">
+						<button className="py-1 px-8 bg-primary text-white font-medium text-sm rounded-md hover:bg-indigo-950">
+							Hide
+						</button>
+					</div>
 				</div>
-				<div className="font-semibold text-primary">
-					<span>Yaounde</span>
-				</div>
-			</div>
-			<div className="py-4">
-				<button className="py-1 px-8 bg-primary text-white font-semibold text-sm rounded-md hover:bg-indigo-950">
-					Hide
-				</button>
 			</div>
 		</div>
 	);

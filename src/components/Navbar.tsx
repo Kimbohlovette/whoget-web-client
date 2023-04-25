@@ -14,7 +14,7 @@ const Navbar = () => {
 			<div className="flex-1 flex flex-row items-center gap-4">
 				<div className="relative">
 					<button
-					className="sm:hidden"
+						className="sm:hidden"
 						onClick={() => {
 							setShowDropdownMenu((state) => !state);
 						}}
@@ -22,7 +22,7 @@ const Navbar = () => {
 						<HiMenu className="text-2xl" />
 					</button>
 					{showDropdownMenu && (
-						<div className="bg-white px-8 py-5 border rounded-md absolute top-10 min-w-[200px]">
+						<div className="bg-white px-8 py-5 border rounded-md absolute top-10 z-50 min-w-[200px]">
 							<nav className="py-4">
 								<ul className="flex flex-col gap-4">
 									<Link
@@ -60,7 +60,7 @@ const Navbar = () => {
 					<AiOutlineUser className="text-2xl" />
 				</button>
 				{showProfile && (
-					<div className="bg-white px-8 py-5 border absolute top-10 right-0 min-w-max">
+					<div className="bg-white px-8 py-5 border absolute top-10 right-0 min-w-max z-50 rounded-md">
 						<nav className="py-4 text-primary font-bold">
 							<ul className="flex flex-col gap-4">
 								<Link

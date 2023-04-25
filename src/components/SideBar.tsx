@@ -16,20 +16,37 @@ const SideBar = () => {
 	}, []);
 	return (
 		<div className="px-4 h-full min-w-[200px] text-indigo-950">
-			<div>
-				<h1 className="text-2xl py-4">
-					<Image src={logo} alt="logo" width={150} height={100} className="object-center object-cover aspect-video" />
-				</h1>
+			<div className='my-5'>
+				<Image
+					src={logo}
+					alt="logo"
+					width={150}
+					height={100}
+					
+				/>
 			</div>
-			<nav className="py-4">
+			<nav className="py-8">
 				<ul className="flex flex-col gap-4">
-					<Link href={'/'} className= {router.pathname==='/'? "font-bold": ""}>
+					<Link
+						href={'/'}
+						className={router.pathname === '/' ? 'font-bold' : ''}
+					>
 						<li>Overview</li>
 					</Link>
-					<Link href={'/users'} className= {router.pathname==='/users'? "font-bold": ""}>
+					<Link
+						href={'/users'}
+						className={
+							router.pathname === '/users' ? 'font-bold' : ''
+						}
+					>
 						<li>Users</li>
 					</Link>
-					<Link href={'/asks'} className= {router.pathname==='/asks'? "font-bold": ""}>
+					<Link
+						href={'/asks'}
+						className={
+							router.pathname === '/asks' ? 'font-bold' : ''
+						}
+					>
 						<li>Asks</li>
 					</Link>
 				</ul>

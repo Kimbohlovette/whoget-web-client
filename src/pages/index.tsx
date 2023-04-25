@@ -7,9 +7,6 @@ const inter = Inter({ subsets: ['latin'] });
 export default function Home() {
 	return (
 		<main>
-			<h1 className="text-2xl font-medium text-slate-800 mb-8">
-				Overview
-			</h1>
 			<div className="cards grid grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] gap-4">
 				<Card
 					title="Signups"
