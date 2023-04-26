@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 const SideBar = () => {
 	const router = useRouter();
 	const [logo, setLogo] = useState('');
+	const defaultLogo = require('../assets/logo-transparent.png');
 	useEffect(() => {
 		getDownloadURL(ref(storage, 'images/whogetLogo.png')).then(
 			(logoUrl) => {
@@ -16,13 +17,12 @@ const SideBar = () => {
 	}, []);
 	return (
 		<div className="px-4 h-full min-w-[200px] text-indigo-950">
-			<div className='my-5'>
+			<div className="my-5">
 				<Image
-					src={logo}
+					src={logo !== '' ? logo : defaultLogo}
 					alt="logo"
 					width={150}
 					height={100}
-					
 				/>
 			</div>
 			<nav className="py-8">
