@@ -7,24 +7,43 @@ import Link from 'next/link';
 import asks from './asks';
 
 const Users = () => {
-	const [users, setUsers] = useState<any>(null);
+	const [users, setUsers] = useState<any>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(false);
-	useEffect(() => {
-		setError(false);
-		setIsLoading(true);
-		fetch(
-			'https://whoget-app-server.onrender.com/api/v1/users?page=1&limit=5',
+	const [page, setPage] = useState(1);
+	const fetchData = async (page: number, limit: number) => {
+		const response = await fetch(
+			`https://whoget-app-server.onrender.com/api/v1/users?page=${page}&limit=${limit}`,
 			{
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
 				},
 			}
-		)
-			.then((res) => res.json())
-			.then((data) => {
-				setUsers(data.users);
+		);
+		return (await response.json()).users;
+	};
+
+	const handlePrev = () => {
+		setPage((page) => {
+			if (page < 2) {
+				return 1;
+			} else {
+				return page - 1;
+			}
+		});
+	};
+
+	const handleNext = () => {
+		setPage((page) => page + 1);
+	};
+
+	useEffect(() => {
+		setError(false);
+		setIsLoading(true);
+		fetchData(page, 10)
+			.then((users) => {
+				setUsers(users);
 			})
 			.catch((error) => {
 				setError(true);
@@ -32,7 +51,7 @@ const Users = () => {
 			.finally(() => {
 				setIsLoading(false);
 			});
-	}, []);
+	}, [page]);
 	return (
 		<div>
 			{error && (
@@ -41,14 +60,30 @@ const Users = () => {
 					again.
 				</div>
 			)}
-			{isLoading && <div>Loading data ...</div>}
-			{!users ? (
-				<div>Nothing to show</div>
+			{isLoading && <div className="text-center">Fetching users ...</div>}
+			{users.length === 0 && !isLoading ? (
+				<div className="text-center">Nothing to show</div>
 			) : (
 				<div className="flex flex-col gap-y-4">
 					{users.map((user: any, key: any) => (
 						<User key={key} user={user} />
 					))}
+				</div>
+			)}
+			{!error && !isLoading && (
+				<div className="mt-5 flex justify-center flex-row divide-x [&>*]:px-5">
+					<button
+						onClick={handlePrev}
+						className="text-slate-600 hover:underline underline-offset-2"
+					>
+						Prev
+					</button>
+					<button
+						onClick={handleNext}
+						className="text-slate-600 hover:underline underline-offset-2"
+					>
+						Next
+					</button>
 				</div>
 			)}
 		</div>
@@ -59,27 +94,6 @@ const users = () => {
 	return (
 		<div>
 			<Users />
-			<div className="flex justify-center items-center my-5">
-				<div className="flex flex-row gap-4">
-					<button className="text-slate-600 hover:underline">
-						Prev
-					</button>
-					<ul className="flex flex-row gap-5 [&>*_li]:rounded-sm [&>*_li:active]:text-secondary [&>*_li]:p-2">
-						<Link href={'#'}>
-							<li className="text-secondary">1</li>
-						</Link>
-						<Link href={'#'}>
-							<li>2</li>
-						</Link>
-						<Link href={'#'}>
-							<li>3</li>
-						</Link>
-					</ul>
-					<button className="text-slate-600 hover:underline">
-						Next
-					</button>
-				</div>
-			</div>
 		</div>
 	);
 };
@@ -107,12 +121,12 @@ const User = (props: { user: any }) => {
 							className="object-cover object-center h-full w-full"
 						/>
 					</div>
-					<div className="mt-2">
-						<h1 className="font-semibold text-primary text-lg">
+					<div>
+						<h1 className="font-medium text-slate-700">
 							{props.user.name}
 						</h1>
 						<p className="flex flex-row gap-2 items-center justify-start">
-							<span className="text-slate-400 text-xs font-medium">
+							<span className="text-slate-400 text-sm font-mediuma">
 								{props.user.email}
 							</span>
 						</p>
@@ -120,11 +134,6 @@ const User = (props: { user: any }) => {
 							Placed 15 asks in 63 days.
 						</p>
 					</div>
-				</div>
-				<div>
-					<button className="px-8 py-1 rounded-md bg-primary hover:bg-indigo-900 font-medium backdrop-blur-sm text-white text-sm">
-						{props.user.status === 'active' ? 'Ban' : 'Unban'}
-					</button>
 				</div>
 			</div>
 		</div>
