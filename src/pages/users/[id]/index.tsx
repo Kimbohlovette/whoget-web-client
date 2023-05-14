@@ -3,7 +3,7 @@ import { FaWhatsappSquare } from 'react-icons/fa';
 import { HiOutlineMail, HiOutlineLocationMarker } from 'react-icons/hi';
 import { BsTelephone } from 'react-icons/bs';
 import Image from 'next/legacy/image';
-import ShortAsk from './ShortAsk';
+import ShortAsk from '@/components/ShortAsk';
 const UserDetails = () => {
 	return (
 		<div>
@@ -13,7 +13,7 @@ const UserDetails = () => {
 						<Image
 							height={400}
 							width={300}
-							src={require('../assets/michael_morgan.jpg')}
+							src={require('../../../assets/michael_morgan.jpg')}
 							alt="Michael Morgan"
 							className="object-center object-cover z-0 p-0 m-0"
 						/>

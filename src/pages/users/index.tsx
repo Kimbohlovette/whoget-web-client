@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { CgSpinnerTwoAlt } from 'react-icons/cg';
+import { fetchUsers, updateUserStatus } from '@/dataServices/fetchUsersAPI';
 // import Image from 'next/image';
-import { fetchUsers, updateUserStatus } from '../dataServices/fetchUsersAPI';
 
 const Users = () => {
 	const [users, setUsers] = useState<any>([]);
@@ -30,9 +31,11 @@ const Users = () => {
 		fetchUsers(page, 10)
 			.then((users) => {
 				setUsers(users);
+				setIsLoading(false);
 			})
 			.catch((error) => {
 				setError(true);
+				setIsLoading(false);
 			})
 			.finally(() => {
 				setIsLoading(false);
@@ -125,9 +128,11 @@ const User = (props: { user: any }) => {
 
 	const handleUpdateStatus = () => {
 		if (userStatus === 'active') {
+			setUserUpdateState('inProgress');
 			updateUserStatus(props.user.id, 'inactive')
 				.then(() => {
 					setUserStatus('inactive');
+					setUserUpdateState('success');
 					setUserUpdateState('success');
 				})
 				.catch((error) => {
@@ -138,6 +143,7 @@ const User = (props: { user: any }) => {
 					setUserUpdateState('idle');
 				});
 		} else {
+			setUserUpdateState('inProgress');
 			updateUserStatus(props.user.id, 'active')
 				.then(() => {
 					setUserStatus('active');
@@ -191,14 +197,19 @@ const User = (props: { user: any }) => {
 
 			<td>
 				<button
+					disabled={userUpdateState === 'inProgress'}
 					onClick={handleUpdateStatus}
 					className={
 						userStatus === 'active'
-							? 'z-50 py-2 px-4 rounded-lg bg-slate-200 text-sm font-medium'
-							: 'z-50 py-2 px-4 rounded-lg bg-primary-500 text-sm text-white font-medium'
+							? 'z-50 py-1 px-4 rounded-md border border-primary-500 text-primary-600 text-sm font-medium'
+							: 'z-50 py-1 px-4 rounded-md border-primary-500 bg-primary-500 text-sm text-white font-medium'
 					}
 				>
 					{userStatus === 'active' ? 'Ban' : 'Unband'}
+
+					{userUpdateState === 'inProgress' && (
+						<CgSpinnerTwoAlt className="ml-2 inline animate-spin" />
+					)}
 				</button>
 			</td>
 		</tr>

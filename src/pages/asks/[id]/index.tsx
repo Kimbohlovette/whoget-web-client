@@ -1,8 +1,8 @@
-import storage from '@/fbConfig';
 import { ref, getDownloadURL } from 'firebase/storage';
 import React, { useState } from 'react';
 import { HiChevronLeft, HiChevronRight, HiX } from 'react-icons/hi';
 import Image from 'next/image';
+import storage from '@/fbConfig';
 const AskDetails = () => {
 	const [carUrl, setCarUrl] = useState('');
 	const carRef = ref(storage, 'images/car1.jpg');
