@@ -118,6 +118,11 @@ const User = (props: { user: any }) => {
 		'active'
 	);
 
+	useEffect(() => {
+		setUserStatus(props.user.status);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	const handleUpdateStatus = () => {
 		if (userStatus === 'active') {
 			updateUserStatus(props.user.id, 'inactive')
