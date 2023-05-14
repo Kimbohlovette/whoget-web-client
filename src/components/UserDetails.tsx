@@ -4,7 +4,7 @@ import { HiOutlineMail, HiOutlineLocationMarker } from 'react-icons/hi';
 import { BsTelephone } from 'react-icons/bs';
 import Image from 'next/legacy/image';
 import ShortAsk from './ShortAsk';
-const UserDetals = () => {
+const UserDetails = () => {
 	return (
 		<div>
 			<div className="flex flex-col gap-8 max-h-min sm:flex-row">
@@ -84,4 +84,4 @@ const UserDetals = () => {
 	);
 };
 
-export default UserDetals;
+export default UserDetails;
