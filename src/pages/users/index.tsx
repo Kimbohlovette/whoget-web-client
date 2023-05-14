@@ -161,9 +161,9 @@ const User = (props: { user: any }) => {
 	return (
 		<tr
 			className="relative text-slate-600 py-5 hover:bg-slate-200 cursor-pointer"
-			// onClick={() => {
-			// 	navigation.push('/');
-			// }}
+			onClick={() => {
+				navigation.push(`/users/${props.user.id}`);
+			}}
 		>
 			<td>
 				<div className="max-w-xs py-5 pl-2">

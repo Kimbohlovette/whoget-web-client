@@ -25,3 +25,8 @@ export const updateUserStatus = async (
 	});
 	return (await response.json()).updated;
 };
+
+export const fetchUserById = async (id: string) => {
+	const response = await fetch(`${BASE_URL}users/${id}`);
+	return (await response.json()).user;
+};
