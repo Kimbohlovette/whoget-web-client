@@ -4,34 +4,52 @@ import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import storage from '../fbConfig';
 import { getDownloadURL, ref } from 'firebase/storage';
 import Link from 'next/link';
-import UserDetals from '@/components/UserDetails';
+import UserDetails from '@/components/UserDetails';
 
 const asks = () => {
 	return (
 		<div>
-			<div className="user-cards flex flex-col gap-y-4">
-				<UserDetals />
-			</div>
-			<div className="flex justify-center items-center my-5">
-				<div className="flex flex-row gap-4">
-					<button className="text-slate-600 hover:underline">
-						Prev
-					</button>
-					<ul className="flex flex-row gap-5 [&>*_li]:rounded-sm [&>*_li:active]:text-secondary [&>*_li]:p-2">
-						<Link href={'#'}>
-							<li className="text-secondary">1</li>
-						</Link>
-						<Link href={'#'}>
-							<li>2</li>
-						</Link>
-						<Link href={'#'}>
-							<li>3</li>
-						</Link>
-					</ul>
-					<button className="text-slate-600 hover:underline">
-						Next
-					</button>
+			<div className="cards grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-4 text-slate-600 text-center">
+				<div>
+					<div className="font-bold">856</div>
+					<div className="font-extralight">Asks</div>
 				</div>
+
+				<div>
+					<div className="font-bold">20</div>
+					<div className="font-extralight">Categories</div>
+				</div>
+				<div>
+					<div className="font-bold">500</div>
+					<div>Users</div>
+				</div>
+				<div>
+					<div className="font-bold">45692</div>
+					<div className="font-extralight">Responses</div>
+				</div>
+				<div>
+					<div className="font-bold">2</div>
+					<div className="font-extralight">Hidden</div>
+				</div>
+			</div>
+			<div className="my-16">
+				<table className="table-auto my-5 [&>*]:divide-y w-full">
+					<thead>
+						<tr className="text-sm sm:text-base [&>*]:py-1 text-slate-800 text-left">
+							<th>Message</th>
+							<th className="hidden lg:table-cell">Location</th>
+							<th className="hidden lg:table-cell">Due date</th>
+							<th className="hidden md:table-cell">Category</th>
+							<th className="hidden sm:table-cell">Owner</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody className="text-sm">
+						<AskItem />
+						<AskItem />
+						<AskItem />
+					</tbody>
+				</table>
 			</div>
 		</div>
 	);
@@ -39,94 +57,33 @@ const asks = () => {
 
 export default asks;
 
-const Ask = (props: { ask: any }) => {
-	const [carUrl, setCarUrl] = useState('');
-	const carRef = ref(storage, 'images/car1.jpg');
-
-	getDownloadURL(carRef)
-		.then((url) => {
-			setCarUrl(url);
-			console.log(url);
-		})
-		.catch((error) => {
-			console.log('An error occured!');
-		});
-	const [avatarUrl, setAvatarUrl] = useState('');
-	const avatarRef = ref(storage, 'images/eyong_vanisiah.jpg');
-
-	getDownloadURL(avatarRef)
-		.then((url) => {
-			setAvatarUrl(url);
-			console.log(url);
-		})
-		.catch((error) => {
-			console.log('An error occured!');
-		});
-
+const AskItem = () => {
 	return (
-		<div className="p-8 rounded-md bg-white hover:bg-indigo-100">
-			<div className="flex flex-row gap-4">
-				<div className="border overflow-hidden rounded-full h-fit">
-					<Image
-						src={avatarUrl}
-						height={50}
-						width={50}
-						alt="eyong_vanisiah"
-						className="object-cover object-center aspect-square w-16"
-					/>
+		<tr className="text-slate-600 py-5">
+			<td>
+				<div className="max-w-xs py-5">
+					Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+					Voluptatem sequi dolorum
 				</div>
-				<div>
-					<div>
-						<h1 className="font-light text-slate-400s">
-							Kimboh Lovette
-						</h1>
-						<p className="text-slate-600 text-sm">
-							I need Google Pixel 4X 128GB to truck with my
-							Samsung Note 22 and add cash.
-						</p>
-					</div>
+			</td>
 
-					<div className="relative py-4 mt-5 w-fit flex flex-row gap-2">
-						{carUrl !== '' && (
-							<Image
-								src={carUrl}
-								alt="Car needed"
-								width={100}
-								height={100}
-								className="aspect-[6/4] border rounded-sm h-32 w-auto"
-							/>
-						)}
-						{carUrl !== '' && (
-							<Image
-								src={carUrl}
-								alt="Car needed"
-								width={100}
-								height={100}
-								className="aspect-[6/4] border rounded-sm h-32 w-auto"
-							/>
-						)}
-						<button className="absolute -left-12 top-1/3 rounded-full hover:bg-slate-200 p-1">
-							<HiChevronLeft className="text-2xl text-slate-500" />
-						</button>
-						<button className="absolute -right-12 top-1/3 rounded-full hover:bg-slate-200 p-1">
-							<HiChevronRight className="text-2xl text-slate-500" />
-						</button>
-					</div>
-					<div className="flex flex-row gap-x-8 text-sm">
-						<div className="text-slate-600 font-extralight">
-							<span>Location</span>
-						</div>
-						<div className="font-semibold text-slate-700">
-							<span>Yaounde</span>
-						</div>
-					</div>
-					<div className="py-4">
-						<button className="py-1 px-8 bg-primary-500 text-white font-medium text-sm rounded-md hover:bg-indigo-950">
-							Hide
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
+			<td className="hidden md:table-cell">
+				<div className="py-5">Bamenda</div>
+			</td>
+			<td className="hidden lg:table-cell text-slate-600">
+				<div className="py-5">Friday 12, 2023</div>
+			</td>
+			<td className="hidden md:table-cell text-slate-900 ">
+				<div className="py-5">Technology</div>
+			</td>
+			<td className="hidden sm:table-cell text-slate-900">
+				<div className="py-5">Kimboh Lovette</div>
+			</td>
+			<td>
+				<button className="py-2 px-4 rounded-lg bg-slate-200 text-sm font-medium">
+					Hide
+				</button>
+			</td>
+		</tr>
 	);
 };
