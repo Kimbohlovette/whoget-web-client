@@ -4,14 +4,13 @@ import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import storage from '../fbConfig';
 import { getDownloadURL, ref } from 'firebase/storage';
 import Link from 'next/link';
+import UserDetals from '@/components/UserDetals';
 
 const asks = () => {
 	return (
 		<div>
 			<div className="user-cards flex flex-col gap-y-4">
-				<Ask ask={''} />
-				<Ask ask={''} />
-				<Ask ask={''} />
+				<UserDetals />
 			</div>
 			<div className="flex justify-center items-center my-5">
 				<div className="flex flex-row gap-4">
@@ -122,7 +121,7 @@ const Ask = (props: { ask: any }) => {
 						</div>
 					</div>
 					<div className="py-4">
-						<button className="py-1 px-8 bg-primary text-white font-medium text-sm rounded-md hover:bg-indigo-950">
+						<button className="py-1 px-8 bg-primary-500 text-white font-medium text-sm rounded-md hover:bg-indigo-950">
 							Hide
 						</button>
 					</div>
