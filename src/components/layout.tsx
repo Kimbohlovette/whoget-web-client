@@ -12,7 +12,7 @@ export default function Layout(props: { children: ReactNode }) {
 				</div>
 				<div className="flex-1">
 					<Navbar />
-					<main className="py-8 px-4 sm:px-8 lg:px-16 max-w-7xl min-h-screen">
+					<main className="relative py-8 px-8 sm:px-8 lg:px-16 max-w-7xl min-h-screen">
 						{props.children}
 					</main>
 				</div>

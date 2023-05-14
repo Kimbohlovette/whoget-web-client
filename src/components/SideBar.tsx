@@ -16,7 +16,7 @@ const SideBar = () => {
 		);
 	}, []);
 	return (
-		<div className="px-4 h-full min-w-[200px] text-indigo-950 min-h-[50vh]">
+		<div className="px-4 h-full min-w-[220px] text-indigo-950 min-h-[50vh]">
 			<div className="my-5">
 				<Image
 					src={logo !== '' ? logo : defaultLogo}

@@ -42,7 +42,7 @@ const Navbar = () => {
 						</div>
 					)}
 				</div>
-				<div className="flex justify-start items-center flex-1 gap-2 border bg-white rounded-sm">
+				<div className="flex justify-start items-center flex-1 gap-2 border bg-white rounded-md overflow-hidden">
 					<HiOutlineMagnifyingGlass className="ml-4" />
 					<input
 						type="search"
@@ -61,13 +61,13 @@ const Navbar = () => {
 				</button>
 				{showProfile && (
 					<div className="bg-white px-8 py-5 border absolute top-10 right-0 min-w-max z-50 rounded-md">
-						<nav className="py-4 text-primary font-bold">
+						<nav className="py-4 text-primary-500 font-bold">
 							<ul className="flex flex-col gap-4">
 								<Link
 									href={'/'}
 									className="active:font-semibold"
 								>
-									<li className="text-primary font-bold">
+									<li className="text-primary-500 font-bold">
 										Your profile
 									</li>
 								</Link>

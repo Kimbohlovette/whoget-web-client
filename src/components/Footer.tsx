@@ -8,7 +8,7 @@ import {
 
 const Footer = () => {
 	return (
-		<div className="py-12 px-4 sm:px-8 lg:px-16 flex flex-col sm:flex-row justify-evenly gap-8 bg-primary text-slate-200 text-center sm:text-left">
+		<div className="py-12 px-4 sm:px-8 lg:px-16 flex flex-col sm:flex-row justify-evenly gap-8 bg-primary-500 text-slate-200 text-center sm:text-left">
 			<div>
 				<h1 className="text-lg font-bold uppercase">Company</h1>
 				<ul className="flex flex-col gap-2 font-light text-sm">
