@@ -70,13 +70,13 @@ const AskItem = () => {
 			<td className="hidden md:table-cell">
 				<div className="py-5">Bamenda</div>
 			</td>
-			<td className="hidden lg:table-cell text-slate-600">
+			<td className="hidden lg:table-cell">
 				<div className="py-5">Friday 12, 2023</div>
 			</td>
-			<td className="hidden md:table-cell text-slate-900 ">
+			<td className="hidden md:table-cell">
 				<div className="py-5">Technology</div>
 			</td>
-			<td className="hidden sm:table-cell text-slate-900">
+			<td className="hidden sm:table-cell">
 				<div className="py-5">Kimboh Lovette</div>
 			</td>
 			<td>
