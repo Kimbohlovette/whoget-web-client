@@ -1,10 +1,4 @@
-import Image from 'next/image';
 import React, { useState } from 'react';
-import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
-import storage from '../fbConfig';
-import { getDownloadURL, ref } from 'firebase/storage';
-import Link from 'next/link';
-import UserDetails from '@/components/UserDetails';
 
 const asks = () => {
 	return (
