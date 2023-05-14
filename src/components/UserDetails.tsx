@@ -59,7 +59,6 @@ const UserDetals = () => {
 					</div>
 					<div className="mt-5 flex items-center justify-center sm:justify-start">
 						<button className="w-full max-w-fit sm:max-w-xs px-8 py-2 rounded-lg bg-primary-500 hover:bg-primary-600 font-medium text-white">
-							{' '}
 							Ban
 						</button>
 					</div>
@@ -69,9 +68,16 @@ const UserDetals = () => {
 				<h1 className="text-center sm:text-left text-slate-600 font-bold text-lg">
 					All Asks
 				</h1>
-				<div>
-					<ShortAsk />
-					<ShortAsk />
+				<div className="flex flex-col gap-y-8 mt-8">
+					<div>
+						<ShortAsk />
+					</div>
+					<div>
+						<ShortAsk />
+					</div>
+					<div>
+						<ShortAsk />
+					</div>
 				</div>
 			</div>
 		</div>

@@ -4,7 +4,7 @@ import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import storage from '../fbConfig';
 import { getDownloadURL, ref } from 'firebase/storage';
 import Link from 'next/link';
-import UserDetals from '@/components/UserDetals';
+import UserDetals from '@/components/UserDetails';
 
 const asks = () => {
 	return (
