@@ -59,9 +59,9 @@ export default asks;
 
 const AskItem = () => {
 	return (
-		<tr className="text-slate-600 py-5">
+		<tr className="text-slate-600 py-5 hover:bg-slate-200">
 			<td>
-				<div className="max-w-xs py-5">
+				<div className="max-w-xs py-5 px-2">
 					Lorem ipsum dolor, sit amet consectetur adipisicing elit.
 					Voluptatem sequi dolorum
 				</div>
@@ -79,7 +79,7 @@ const AskItem = () => {
 			<td className="hidden sm:table-cell">
 				<div className="py-5">Kimboh Lovette</div>
 			</td>
-			<td>
+			<td className="pr-2">
 				<button className="py-2 px-4 rounded-lg bg-slate-200 text-sm font-medium">
 					Hide
 				</button>

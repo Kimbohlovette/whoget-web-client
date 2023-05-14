@@ -1,10 +1,7 @@
 import storage from '@/fbConfig';
 import { ref, getDownloadURL } from 'firebase/storage';
 import React, { useEffect, useState } from 'react';
-import Image from 'next/legacy/image';
-import { MdOutlineLocationOn } from 'react-icons/md';
-import Link from 'next/link';
-import asks from './asks';
+import { useRouter } from 'next/router';
 
 const Users = () => {
 	const [users, setUsers] = useState<any>([]);
@@ -64,10 +61,36 @@ const Users = () => {
 			{users.length === 0 && !isLoading ? (
 				<div className="text-center">Nothing to show</div>
 			) : (
-				<div className="flex flex-col gap-y-4">
-					{users.map((user: any, key: any) => (
-						<User key={key} user={user} />
-					))}
+				<div className="my-16">
+					<table className="table-auto my-5 [&>*]:divide-y w-full">
+						<thead>
+							<tr className="text-sm sm:text-base [&>*]:py-1 text-slate-800 text-left">
+								<th>Name</th>
+								<th className="hidden sm:table-cell">
+									Phone number
+								</th>
+								<th className="hidden lg:table-cell">
+									No. of Asks
+								</th>
+								<th className="hidden lg:table-cell">
+									Responses Reseived
+								</th>
+								<th className="hidden md:table-cell">
+									Location
+								</th>
+								<th className="hidden sm:table-cell">
+									No. of Reports
+								</th>
+
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody className="text-sm">
+							{users.map((u: any, key: any) => (
+								<User key={key} user={u} />
+							))}
+						</tbody>
+					</table>
 				</div>
 			)}
 			{!error && !isLoading && (
@@ -98,6 +121,7 @@ const users = () => {
 	);
 };
 const User = (props: { user: any }) => {
+	const navigation = useRouter();
 	const [avatarUrl, setAvatarUrl] = useState('');
 	const avatarRef = ref(storage, 'images/eyong_vanisiah.jpg');
 
@@ -109,34 +133,42 @@ const User = (props: { user: any }) => {
 			console.log('An error occured!');
 		});
 	return (
-		<div className="p-5 rounded-md bg-white hover:bg-indigo-100 cursor-pointer">
-			<div className="flex flex-row justify-between items-center gap-2">
-				<div className="flex justify-start items-start gap-4">
-					<div className="border overflow-hidden rounded-full w-16  aspect-square">
-						<Image
-							src={props.user.profileImage}
-							height={200}
-							width={200}
-							alt="eyong_vanisiah"
-							className="object-cover object-center h-full w-full"
-						/>
-					</div>
-					<div>
-						<h1 className="font-medium text-slate-700">
-							{props.user.name}
-						</h1>
-						<p className="flex flex-row gap-2 items-center justify-start">
-							<span className="text-slate-400 text-sm font-mediuma">
-								{props.user.email}
-							</span>
-						</p>
-						<p className="mt-3 text-slate-600 text-sm max-w-2xl">
-							Placed 15 asks in 63 days.
-						</p>
+		<tr
+			className="text-slate-600 py-5 hover:bg-slate-200 cursor-pointer"
+			onClick={() => {
+				navigation.push('/');
+			}}
+		>
+			<td>
+				<div className="max-w-xs py-5 pl-2">
+					<div className="flex flex-row gap-x-2 items-center">
+						<div className="h-10 aspect-square rounded-full bg-slate-50 border"></div>
+						<div>Kimboh Lovette</div>
 					</div>
 				</div>
-			</div>
-		</div>
+			</td>
+			<td className="hidden sm:table-cell">
+				<div className="py-5">237 654115922</div>
+			</td>
+			<td className="hidden md:table-cell">
+				<div className="py-5">34</div>
+			</td>
+			<td className="hidden lg:table-cell">
+				<div className="py-5">34</div>
+			</td>
+			<td className="hidden md:table-cell">
+				<div className="py-5">Bamenda</div>
+			</td>
+			<td className="hidden sm:table-cell">
+				<div className="py-5">2</div>
+			</td>
+
+			<td>
+				<button className="py-2 px-4 rounded-lg bg-slate-200 text-sm font-medium">
+					Hide
+				</button>
+			</td>
+		</tr>
 	);
 };
 
