@@ -192,7 +192,11 @@ const User = (props: { user: any }) => {
 			<td>
 				<button
 					onClick={handleUpdateStatus}
-					className="z-50 py-2 px-4 rounded-lg bg-slate-200 text-sm font-medium"
+					className={
+						userStatus === 'active'
+							? 'z-50 py-2 px-4 rounded-lg bg-slate-200 text-sm font-medium'
+							: 'z-50 py-2 px-4 rounded-lg bg-primary-500 text-sm text-white font-medium'
+					}
 				>
 					{userStatus === 'active' ? 'Ban' : 'Unband'}
 				</button>
