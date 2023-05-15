@@ -89,7 +89,7 @@ const AskDetails = () => {
 									<img
 										src={ask.imageUrl}
 										alt="Car needed"
-										className="aspect-video border rounded-sm w-full max-h-56 sm:max-w-2xl"
+										className="aspect-video object-center object-cover border rounded-sm w-full max-h-56 sm:max-w-2xl"
 									/>
 								)}
 								<button className="absolute -left-12 top-1/3 rounded-full hover:bg-slate-200 p-1">
@@ -117,11 +117,7 @@ const AskDetails = () => {
 										askStatusUpdateState === 'inProgress'
 									}
 									onClick={handleAskStatusUpdates}
-									className={
-										askStatus === 'visible'
-											? 'flex flex-row gap-x-2 py-1 px-4 rounded-md border border-primary-500 text-xs font-medium'
-											: 'flex flex-row gap-x-2 py-1 px-4 rounded-md border border-primary-500 bg-primary-500 text-white  text-xs font-medium'
-									}
+									className="flex flex-row gap-x-2 py-1 px-4 rounded-md border border-primary-500 bg-primary-500 text-white  text-xs font-medium"
 								>
 									<span className="inline-block">
 										{askStatus === 'visible'

@@ -122,10 +122,10 @@ const AskItem = (props: { ask: any }) => {
 	};
 	return (
 		<tr
-			// onClick={() => {
-			// 	// router.push(`/asks/${props.ask.id}`);
-			// }}
-			className="text-slate-600 py-5 hover:bg-slate-200 cursor-pointer"
+			onClick={() => {
+				router.push(`/asks/${props.ask.id}`);
+			}}
+			className="relative z- text-slate-600 py-5 hover:bg-slate-200 cursor-pointer"
 		>
 			<td>
 				<div className="max-w-xs py-5 px-2">{props.ask.message}</div>
