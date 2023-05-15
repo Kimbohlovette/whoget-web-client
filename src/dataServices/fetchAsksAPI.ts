@@ -7,6 +7,7 @@ export const fetchAsks = async (page: number, limit: number) => {
 			{
 				method: 'GET',
 				headers: {
+					'Access-Control-Allow-Origin': 'no-cors',
 					'Content-Type': 'application/json',
 				},
 			}
