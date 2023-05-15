@@ -75,7 +75,9 @@ const AskDetails = () => {
 						<div>
 							<div>
 								<h1 className="font-light text-slate-400s">
-									Kimboh Lovette
+									{ask.userName && ask.userName === ''
+										? ask.userName
+										: ask.contactNumber}
 								</h1>
 								<p className="text-slate-600 text-sm pt-2">
 									{textShortener(ask.message, 14)}
