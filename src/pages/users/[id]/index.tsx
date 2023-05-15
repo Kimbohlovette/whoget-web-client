@@ -148,7 +148,7 @@ const UserDetails = () => {
 							disabled={userUpdateState === 'inProgress'}
 							onClick={handleUpdateStatus}
 							className={
-								'w-full max-w-[120px] z-50 py-2 px-4 rounded-md border-primary-500 bg-primary-500 text-sm text-white font-semibold'
+								'w-full max-w-[120px] z-50 py-1 px-4 rounded-md border-primary-500 bg-primary-500 text-xs text-white font-semibold'
 							}
 						>
 							{userStatus === 'active' ? 'Ban' : 'Unband'}
@@ -167,7 +167,7 @@ const UserDetails = () => {
 					</div>
 					All Asks
 				</h1>
-				<div className="flex flex-col gap-y-8 mt-8">
+				<div className="flex flex-col divide-y [&>*]:py-4 mt-8">
 					{userAsksData ? (
 						userAsksData.asks.map((ask: any, key: any) => {
 							return (

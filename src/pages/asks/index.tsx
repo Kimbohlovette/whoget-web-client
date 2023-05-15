@@ -1,6 +1,7 @@
-import { fetchAsks } from '@/dataServices/fetchAsksAPI';
+import { fetchAsks, updateAskStatus } from '@/dataServices/fetchAsksAPI';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { CgSpinnerTwoAlt } from 'react-icons/cg';
 
 const Asks = () => {
 	const [asks, setAsks] = useState<any>(null);
@@ -83,12 +84,48 @@ export default Asks;
 
 const AskItem = (props: { ask: any }) => {
 	const router = useRouter();
+	const [askStatus, setAskStatus] = useState<'visible' | 'invisible'>(
+		props.ask.status
+	);
+	const [askStatusUpdateState, setAskStatusUpdateState] = useState<
+		'idle' | 'inProgress' | 'success' | 'failed'
+	>('idle');
+	const handleAskStatusUpdates = () => {
+		setAskStatusUpdateState('inProgress');
+		if (askStatus === 'visible') {
+			updateAskStatus(props.ask.id, 'invisible')
+				.then(() => {
+					setAskStatus('invisible');
+					setAskStatusUpdateState('success');
+				})
+				.catch((error) => {
+					console.log(error);
+					setAskStatusUpdateState('failed');
+				})
+				.finally(() => {
+					setAskStatusUpdateState('idle');
+				});
+		} else {
+			updateAskStatus(props.ask.id, 'visible')
+				.then(() => {
+					setAskStatus('visible');
+					setAskStatusUpdateState('success');
+				})
+				.catch((error) => {
+					console.log(error);
+					setAskStatusUpdateState('failed');
+				})
+				.finally(() => {
+					setAskStatusUpdateState('idle');
+				});
+		}
+	};
 	return (
 		<tr
-			onClick={() => {
-				router.push(`/asks/${props.ask.id}`);
-			}}
-			className="text-slate-600 py-5 hover:bg-slate-200"
+			// onClick={() => {
+			// 	// router.push(`/asks/${props.ask.id}`);
+			// }}
+			className="text-slate-600 py-5 hover:bg-slate-200 cursor-pointer"
 		>
 			<td>
 				<div className="max-w-xs py-5 px-2">{props.ask.message}</div>
@@ -107,8 +144,22 @@ const AskItem = (props: { ask: any }) => {
 				<div className="py-5">{props.ask.userName || 'N/A'} </div>
 			</td>
 			<td className="pr-2">
-				<button className="py-2 px-4 rounded-lg bg-slate-200 text-sm font-medium">
-					Hide
+				<button
+					disabled={askStatusUpdateState === 'inProgress'}
+					onClick={handleAskStatusUpdates}
+					className={
+						askStatus === 'visible'
+							? 'flex flex-row gap-x-2 py-1 px-4 rounded-md border border-primary-500 text-xs font-medium'
+							: 'flex flex-row gap-x-2 py-1 px-4 rounded-md border border-primary-500 bg-primary-500 text-white  text-xs font-medium'
+					}
+				>
+					<span className="inline-block">
+						{askStatus === 'visible' ? 'Hide' : 'Unhide'}
+					</span>
+
+					{askStatusUpdateState === 'inProgress' && (
+						<CgSpinnerTwoAlt className="ml-2 inline animate-spin" />
+					)}
 				</button>
 			</td>
 		</tr>
