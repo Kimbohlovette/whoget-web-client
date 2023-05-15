@@ -19,7 +19,7 @@ const ShortAsk = (props: { ask: any }) => {
 			</div>
 			<div>
 				<button className="px-4 py-1 text-white bg-primary-500 rounded-md text-xs font-medium hover:bg-primary-600">
-					Hide
+					{props.ask.status === 'visible' ? 'Hide' : 'Unhide'}
 				</button>
 			</div>
 		</div>

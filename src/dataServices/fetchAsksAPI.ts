@@ -47,3 +47,12 @@ export const fetchAsksByUserId = async (userId: string) => {
 		return new Error('Error occured while loading asks');
 	}
 };
+
+export const fetchAskById = async (id: string) => {
+	try {
+		const response = await fetch(`${BASE_URL}asks/${id}`);
+		return (await response.json()).ask;
+	} catch (error) {
+		console.log(error);
+	}
+};
