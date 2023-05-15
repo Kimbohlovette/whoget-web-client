@@ -160,7 +160,7 @@ const User = (props: { user: any }) => {
 	};
 	return (
 		<tr
-			className="relative text-slate-600 py-5 hover:bg-slate-200 cursor-pointer"
+			className="text-slate-600 py-5 hover:bg-slate-200 cursor-pointer"
 			onClick={() => {
 				navigation.push(`/users/${props.user.id}`);
 			}}
@@ -195,14 +195,14 @@ const User = (props: { user: any }) => {
 				<div className="py-5">2</div>
 			</td>
 
-			<td>
+			<td className="relative z-50">
 				<button
 					disabled={userUpdateState === 'inProgress'}
 					onClick={handleUpdateStatus}
 					className={
 						userStatus === 'active'
 							? 'z-50 py-1 px-4 rounded-md border border-primary-500 text-primary-600 text-sm font-medium'
-							: 'z-50 py-1 px-4 rounded-md border-primary-500 bg-primary-500 text-sm text-white font-medium'
+							: 'py-1 px-4 rounded-md border-primary-500 bg-primary-500 text-sm text-white font-medium'
 					}
 				>
 					{userStatus === 'active' ? 'Ban' : 'Unband'}

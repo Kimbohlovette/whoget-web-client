@@ -3,14 +3,61 @@ import React, { useEffect, useState } from 'react';
 import { FaWhatsappSquare } from 'react-icons/fa';
 import { HiOutlineMail, HiOutlineLocationMarker } from 'react-icons/hi';
 import { BsTelephone } from 'react-icons/bs';
-import { CgSpinner } from 'react-icons/cg';
+import { CgSpinner, CgSpinnerTwoAlt } from 'react-icons/cg';
 
 import ShortAsk from '@/components/ShortAsk';
 import { useRouter } from 'next/router';
-import { fetchUserById } from '@/dataServices/fetchUsersAPI';
+import { fetchUserById, updateUserStatus } from '@/dataServices/fetchUsersAPI';
 const UserDetails = () => {
 	const router = useRouter();
 	const [user, setUser] = useState<any>(null);
+	const [userUpdateState, setUserUpdateState] = useState<
+		'idle' | 'inProgress' | 'failed' | 'success'
+	>('idle');
+	const [userStatus, setUserStatus] = useState<'active' | 'inactive'>(
+		'active'
+	);
+
+	useEffect(() => {
+		if (user) {
+			setUserStatus(user.status);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const handleUpdateStatus = () => {
+		if (userStatus === 'active') {
+			setUserUpdateState('inProgress');
+			updateUserStatus(user.id, 'inactive')
+				.then(() => {
+					setUserStatus('inactive');
+					setUserUpdateState('success');
+					setUserUpdateState('success');
+				})
+				.catch((error) => {
+					console.log(error);
+					setUserUpdateState('failed');
+				})
+				.finally(() => {
+					setUserUpdateState('idle');
+				});
+		} else {
+			setUserUpdateState('inProgress');
+			updateUserStatus(user.id, 'active')
+				.then(() => {
+					setUserStatus('active');
+					setUserUpdateState('success');
+				})
+				.catch((error) => {
+					console.log(error);
+					setUserUpdateState('failed');
+				})
+				.finally(() => {
+					setUserUpdateState('idle');
+				});
+		}
+	};
+
 	useEffect(() => {
 		if (router.isReady) {
 			console.log(router.query.id);
@@ -78,8 +125,18 @@ const UserDetails = () => {
 						</div>
 					</div>
 					<div className="mt-5 flex items-center justify-center sm:justify-start">
-						<button className="w-full max-w-fit sm:max-w-xs px-8 py-2 rounded-lg bg-primary-500 hover:bg-primary-600 font-medium text-white">
-							{user.status === 'active' ? 'Ban' : 'Unban'}
+						<button
+							disabled={userUpdateState === 'inProgress'}
+							onClick={handleUpdateStatus}
+							className={
+								'w-full max-w-xs z-50 py-2 px-4 rounded-md border-primary-500 bg-primary-500 text-sm text-white font-semibold'
+							}
+						>
+							{userStatus === 'active' ? 'Ban' : 'Unband'}
+
+							{userUpdateState === 'inProgress' && (
+								<CgSpinnerTwoAlt className="ml-2 inline animate-spin" />
+							)}
 						</button>
 					</div>
 				</div>
