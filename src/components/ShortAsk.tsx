@@ -1,13 +1,19 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 
-const ShortAsk = () => {
+const ShortAsk = (props: { ask: any }) => {
+	const router = useRouter();
 	return (
-		<div className="flex flex-row gap-x-2 sm:gap-x-5">
+		<div
+			onClick={() => {
+				router.push(`../asks/${props.ask.id}`);
+			}}
+			className="flex flex-row gap-x-2 sm:gap-x-5"
+		>
 			<div className="h-12 rounded-full bg-slate-200 border aspect-square"></div>
 			<div className="flex-1">
 				<p className="w-full max-w-md md:max-w-lg">
-					Lorem ipsum dolor sit amet consectetur adipisicing elit.
-					Quidem minus quod ipsam ...
+					{props.ask.message}
 				</p>
 			</div>
 			<div>

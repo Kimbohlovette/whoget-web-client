@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { CgSpinnerTwoAlt } from 'react-icons/cg';
+import { ImSpinner8 } from 'react-icons/im';
 import { fetchUsers, updateUserStatus } from '@/dataServices/fetchUsersAPI';
 // import Image from 'next/image';
 
@@ -84,7 +84,11 @@ const Users = () => {
 					again.
 				</div>
 			)}
-			{isLoading && <div className="text-center">Fetching users ...</div>}
+			{isLoading && (
+				<div className="flex justify-center">
+					<ImSpinner8 className="text-secondary-400 text-xl animate-spin text-center" />
+				</div>
+			)}
 			{!error && !isLoading && (
 				<div className="mt-5 flex justify-center flex-row divide-x [&>*]:px-5">
 					<button
@@ -208,7 +212,7 @@ const User = (props: { user: any }) => {
 					{userStatus === 'active' ? 'Ban' : 'Unband'}
 
 					{userUpdateState === 'inProgress' && (
-						<CgSpinnerTwoAlt className="ml-2 inline animate-spin" />
+						<ImSpinner8 className="inline ml-2 animate-spin" />
 					)}
 				</button>
 			</td>

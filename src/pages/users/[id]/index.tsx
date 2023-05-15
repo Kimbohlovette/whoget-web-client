@@ -8,9 +8,16 @@ import { CgSpinner, CgSpinnerTwoAlt } from 'react-icons/cg';
 import ShortAsk from '@/components/ShortAsk';
 import { useRouter } from 'next/router';
 import { fetchUserById, updateUserStatus } from '@/dataServices/fetchUsersAPI';
+import { fetchAsksByUserId } from '@/dataServices/fetchAsksAPI';
+import asks from '../../asks/index';
+import { ImSpinner8 } from 'react-icons/im';
 const UserDetails = () => {
 	const router = useRouter();
 	const [user, setUser] = useState<any>(null);
+	const [userAsksData, setUserAsksData] = useState<any>(null);
+	const [fetchAsksState, setFetchAsksState] = useState<
+		'idle' | 'inProgress' | 'failed' | 'success'
+	>('idle');
 	const [userUpdateState, setUserUpdateState] = useState<
 		'idle' | 'inProgress' | 'failed' | 'success'
 	>('idle');
@@ -31,7 +38,6 @@ const UserDetails = () => {
 			updateUserStatus(user.id, 'inactive')
 				.then(() => {
 					setUserStatus('inactive');
-					setUserUpdateState('success');
 					setUserUpdateState('success');
 				})
 				.catch((error) => {
@@ -69,6 +75,19 @@ const UserDetails = () => {
 				})
 				.catch((error) => {
 					console.log(error);
+				});
+			fetchAsksByUserId(id)
+				.then((data) => {
+					setUserAsksData(data);
+					console.log('data', data);
+					setFetchAsksState('success');
+				})
+				.catch((error) => {
+					console.log(error);
+					setFetchAsksState('failed');
+				})
+				.finally(() => {
+					setFetchAsksState('idle');
 				});
 		}
 	}, [router.isReady, router.query]);
@@ -129,39 +148,44 @@ const UserDetails = () => {
 							disabled={userUpdateState === 'inProgress'}
 							onClick={handleUpdateStatus}
 							className={
-								'w-full max-w-xs z-50 py-2 px-4 rounded-md border-primary-500 bg-primary-500 text-sm text-white font-semibold'
+								'w-full max-w-[120px] z-50 py-2 px-4 rounded-md border-primary-500 bg-primary-500 text-sm text-white font-semibold'
 							}
 						>
 							{userStatus === 'active' ? 'Ban' : 'Unband'}
 
 							{userUpdateState === 'inProgress' && (
-								<CgSpinnerTwoAlt className="ml-2 inline animate-spin" />
+								<CgSpinnerTwoAlt className="text-secondary-400 ml-2 inline animate-spin" />
 							)}
 						</button>
 					</div>
 				</div>
 			</div>
 			<div className="mt-12">
-				<h1 className="text-center sm:text-left text-slate-600 font-bold text-lg">
+				<h1 className="w-fit relative mx-auto sm:mx-0 sm:text-left text-slate-600 font-bold text-lg">
+					<div className="absolute -top-1 -right-2 bg-secondary-500 text-white text-xs h-4 aspect-square rounded-full text-center">
+						{userAsksData ? userAsksData.numOfAsks : 0}
+					</div>
 					All Asks
 				</h1>
 				<div className="flex flex-col gap-y-8 mt-8">
-					<div>
-						<ShortAsk />
-					</div>
-					<div>
-						<ShortAsk />
-					</div>
-					<div>
-						<ShortAsk />
-					</div>
+					{userAsksData ? (
+						userAsksData.asks.map((ask: any, key: any) => {
+							return (
+								<div key={key}>
+									<ShortAsk ask={ask} />
+								</div>
+							);
+						})
+					) : (
+						<div>Your recent asks show here.</div>
+					)}
 				</div>
 			</div>
 		</div>
 	) : (
 		<div className="h-full w-full flex justify-center items-center">
 			<div>
-				<CgSpinner className="text-3xl animate-spin" />
+				<ImSpinner8 className="text-secondary-400 text-3xl animate-spin" />
 			</div>
 		</div>
 	);
