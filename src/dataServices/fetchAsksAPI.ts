@@ -1,4 +1,5 @@
 const BASE_URL = 'https://whoget-app-server.onrender.com/api/v1/';
+// const BASE_URL = 'https://localhost:5000/api/v1/';
 
 export const fetchAsks = async (page: number, limit: number) => {
 	try {
