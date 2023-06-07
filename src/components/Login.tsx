@@ -1,12 +1,18 @@
 import Image from 'next/image';
 import { Metadata } from 'next';
 import React from 'react';
+import { useAppDispatch } from '@/store/hooks';
+import { updateAuthStatus } from '@/store/slices/userSlice';
 
 export const metadata: Metadata = {
 	title: 'Login to your account',
 	description: 'Login to monitor app statistics and user activities',
 };
 const Login = () => {
+	const dispatch = useAppDispatch();
+	const handleSignin = async () => {
+		dispatch(updateAuthStatus(true));
+	};
 	const logoImage: string = require('src/assets/whoget-primary.png');
 	return (
 		<div>
@@ -73,7 +79,10 @@ const Login = () => {
 						</div>
 
 						<div>
-							<button className="flex w-full justify-center rounded-md bg-primary-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+							<button
+								onClick={handleSignin}
+								className="flex w-full justify-center rounded-md bg-primary-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+							>
 								Sign in
 							</button>
 						</div>
