@@ -7,7 +7,11 @@ import { CgSpinner, CgSpinnerTwoAlt } from 'react-icons/cg';
 
 import ShortAsk from '@/components/ShortAsk';
 import { useRouter } from 'next/router';
-import { fetchUserById, updateUserStatus } from '@/dataServices/fetchUsersAPI';
+import {
+	fetchUserById,
+	fetchUsers,
+	updateUserStatus,
+} from '@/dataServices/fetchUsersAPI';
 import { fetchAsksByUserId } from '@/dataServices/fetchAsksAPI';
 import { routeGuard } from '@/utils/routeGuard';
 import { ImSpinner8 } from 'react-icons/im';

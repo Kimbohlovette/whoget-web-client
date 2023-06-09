@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { CgSpinnerTwoAlt } from 'react-icons/cg';
 
-const Asks = async () => {
+const Asks = () => {
 	const [asks, setAsks] = useState<any>(null);
 	const [fetchingAsksState, setFetchingAsksState] = useState<
 		'idle' | 'inProgress' | 'failed' | 'success'
