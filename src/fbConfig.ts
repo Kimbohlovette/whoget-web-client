@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getStorage } from 'firebase/storage';
+import { getAuth } from 'firebase/auth';
 const firebaseConfig = {
 	apiKey: 'AIzaSyDTX6VDrnGiGMpHOlxbdi4KbKFMd_YPSi8',
 	authDomain: 'whoget-assets.firebaseapp.com',
@@ -13,5 +14,5 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
-
+export const auth = getAuth(app);
 export default storage;
