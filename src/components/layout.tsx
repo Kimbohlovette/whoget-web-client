@@ -1,14 +1,9 @@
 import Navbar from './Navbar';
 import { ReactNode } from 'react';
 import SideBar from './SideBar';
-import { useAppSelector } from '@/store/hooks';
-import Login from './Login';
 
 export default function Layout(props: { children: ReactNode }) {
-	const isAuthenticated = useAppSelector(
-		(state) => state.user.isAuthenticated
-	);
-	return isAuthenticated ? (
+	return (
 		<div className="flex flex-col">
 			<div className="flex-1 flex flex-row py-4">
 				<div className="hidden md:block">
@@ -22,7 +17,5 @@ export default function Layout(props: { children: ReactNode }) {
 				</div>
 			</div>
 		</div>
-	) : (
-		<Login />
 	);
 }

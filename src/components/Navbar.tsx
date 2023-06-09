@@ -10,11 +10,11 @@ const Navbar = () => {
 	const [showDropdownMenu, setShowDropdownMenu] = useState(false);
 	const [showProfile, setShowProfile] = useState(false);
 	return (
-		<header className="py-4 px-4 flex flex-row items-center justify-between gap-4">
+		<header className="pt-4 pb-8 px-4 flex flex-row items-center justify-between gap-4 border-b">
 			<div className="flex-1 flex flex-row items-center gap-4">
 				<div className="relative">
 					<button
-						className="sm:hidden"
+						className="md:hidden"
 						onClick={() => {
 							setShowDropdownMenu((state) => !state);
 						}}

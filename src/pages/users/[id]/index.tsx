@@ -9,10 +9,14 @@ import ShortAsk from '@/components/ShortAsk';
 import { useRouter } from 'next/router';
 import { fetchUserById, updateUserStatus } from '@/dataServices/fetchUsersAPI';
 import { fetchAsksByUserId } from '@/dataServices/fetchAsksAPI';
-import asks from '../../asks/index';
+import { routeGuard } from '@/utils/routeGuard';
 import { ImSpinner8 } from 'react-icons/im';
+import { useAppSelector } from '@/store/hooks';
 const UserDetails = () => {
 	const router = useRouter();
+	const isAuthenticated = useAppSelector(
+		(state) => state.user.isAuthenticated
+	);
 	const [user, setUser] = useState<any>(null);
 	const [userAsksData, setUserAsksData] = useState<any>(null);
 	const [fetchAsksState, setFetchAsksState] = useState<
@@ -24,6 +28,10 @@ const UserDetails = () => {
 	const [userStatus, setUserStatus] = useState<'active' | 'inactive'>(
 		'active'
 	);
+
+	useEffect(() => {
+		routeGuard(router, isAuthenticated);
+	}, [isAuthenticated, router]);
 
 	useEffect(() => {
 		if (user) {

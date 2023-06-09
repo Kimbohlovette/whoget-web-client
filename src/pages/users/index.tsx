@@ -3,9 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ImSpinner8 } from 'react-icons/im';
 import { fetchUsers, updateUserStatus } from '@/dataServices/fetchUsersAPI';
+import { useAppSelector } from '@/store/hooks';
+import { routeGuard } from '@/utils/routeGuard';
 // import Image from 'next/image';
 
 const Users = () => {
+	const isAuthenticated = useAppSelector(
+		(state) => state.user.isAuthenticated
+	);
+	const router = useRouter();
 	const [users, setUsers] = useState<any>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(false);
@@ -24,6 +30,10 @@ const Users = () => {
 	const handleNext = () => {
 		setPage((page) => page + 1);
 	};
+
+	useEffect(() => {
+		routeGuard(router, isAuthenticated);
+	}, [isAuthenticated, router]);
 
 	useEffect(() => {
 		setError(false);
@@ -57,14 +67,8 @@ const Users = () => {
 								<th className="hidden lg:table-cell">
 									No. of Asks
 								</th>
-								<th className="hidden lg:table-cell">
-									Responses Reseived
-								</th>
 								<th className="hidden md:table-cell">
 									Location
-								</th>
-								<th className="hidden sm:table-cell">
-									No. of Reports
 								</th>
 
 								<th>Action</th>
@@ -185,12 +189,6 @@ const User = (props: { user: any }) => {
 			</td>
 			<td className="hidden sm:table-cell">
 				<div className="py-5">{props.user.phoneNumber}</div>
-			</td>
-			<td className="hidden md:table-cell">
-				<div className="py-5">34</div>
-			</td>
-			<td className="hidden lg:table-cell">
-				<div className="py-5">34</div>
 			</td>
 			<td className="hidden md:table-cell">
 				<div className="py-5">{props.user.location || 'Buea'}</div>

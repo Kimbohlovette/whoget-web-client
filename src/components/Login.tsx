@@ -1,22 +1,33 @@
 import Image from 'next/image';
 import { Metadata } from 'next';
-import React from 'react';
-import { useAppDispatch } from '@/store/hooks';
+import React, { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { updateAuthStatus } from '@/store/slices/userSlice';
+import { useRouter } from 'next/router';
 
 export const metadata: Metadata = {
 	title: 'Login to your account',
 	description: 'Login to monitor app statistics and user activities',
 };
+
 const Login = () => {
+	const router = useRouter();
+	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
 	const handleSignin = async () => {
 		dispatch(updateAuthStatus(true));
+		setIsAuthenticated(true);
 	};
-	const logoImage: string = require('src/assets/whoget-primary.png');
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			router.push('/');
+		}
+	}, [isAuthenticated]);
+	const logoImage: string = require('../assets/whoget-primary.png');
 	return (
-		<div>
-			<div className="flex min-h-full flex-1 flex-col justify-center items-center px-6 mt-16 py-2 lg:px-8">
+		<div className="fixed left-0 top-0 bg-white w-full h-full">
+			<div className="flex min-h-full flex-1 flex-col items-center px-6 mt-16 py-2 lg:px-8">
 				<div className="sm:mx-auto sm:w-full sm:max-w-sm">
 					<Image
 						src={logoImage}

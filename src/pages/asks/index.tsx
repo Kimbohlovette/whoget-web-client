@@ -1,9 +1,10 @@
 import { fetchAsks, updateAskStatus } from '@/dataServices/fetchAsksAPI';
+import { textShortener } from '@/shared/textShortener';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { CgSpinnerTwoAlt } from 'react-icons/cg';
 
-const Asks = () => {
+const Asks = async () => {
 	const [asks, setAsks] = useState<any>(null);
 	const [fetchingAsksState, setFetchingAsksState] = useState<
 		'idle' | 'inProgress' | 'failed' | 'success'
@@ -27,7 +28,7 @@ const Asks = () => {
 	return (
 		asks && (
 			<div>
-				<div className="cards grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-4 text-slate-600 text-center">
+				{/* <div className="cards grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-4 text-slate-600 text-center">
 					<div>
 						<div className="font-bold">856</div>
 						<div className="font-extralight">Asks</div>
@@ -49,21 +50,17 @@ const Asks = () => {
 						<div className="font-bold">2</div>
 						<div className="font-extralight">Hidden</div>
 					</div>
-				</div>
-				<div className="my-16">
+				</div> */}
+				<div className="mt-2">
 					<table className="table-auto my-5 [&>*]:divide-y w-full">
-						<thead>
+						<thead className="border-b border-primary-100">
 							<tr className="text-sm sm:text-base [&>*]:py-1 text-slate-800 text-left">
 								<th>Message</th>
-								<th className="hidden lg:table-cell">
-									Location
-								</th>
+
 								<th className="hidden lg:table-cell">
 									Due date
 								</th>
-								<th className="hidden md:table-cell">
-									Category
-								</th>
+
 								<th className="hidden sm:table-cell">Owner</th>
 								<th>Action</th>
 							</tr>
@@ -128,17 +125,12 @@ const AskItem = (props: { ask: any }) => {
 			className="relative z- text-slate-600 py-5 hover:bg-slate-200 cursor-pointer"
 		>
 			<td>
-				<div className="max-w-xs py-5 px-2">{props.ask.message}</div>
-			</td>
-
-			<td className="hidden md:table-cell">
-				<div className="py-5">{props.ask.location || 'N/A'}</div>
+				<div className="max-w-xs py-5 px-2">
+					{textShortener(props.ask.message, 14)}
+				</div>
 			</td>
 			<td className="hidden lg:table-cell">
 				<div className="py-5">{props.ask.expirationDate}</div>
-			</td>
-			<td className="hidden md:table-cell">
-				<div className="py-5">{props.ask.categoryName || 'N/A'}</div>
 			</td>
 			<td className="hidden sm:table-cell">
 				<div className="py-5">{props.ask.userName || 'N/A'} </div>
