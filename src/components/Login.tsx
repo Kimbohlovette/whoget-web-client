@@ -23,6 +23,7 @@ const Login = () => {
 	const handleSignin = async () => {
 		if (!email || email === '' || !password || password === '') {
 			// invalid credentials
+			toast.warn('Email and password fields are required');
 			return;
 		} else {
 			setAuthenticating(true);
@@ -41,11 +42,13 @@ const Login = () => {
 						toast.error('No internet connection');
 					} else if (
 						error.code === 'auth/user-not-found' ||
-						error.code === 'auth/wrong-password'
+						error.code === 'auth/wrong-password' ||
+						error.code === 'auth/invalid-email'
 					) {
 						toast.error('Invalid email or password');
 					} else {
 						toast.error('An unkown error occurred');
+						console.log(error.code);
 					}
 				});
 
