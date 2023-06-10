@@ -6,68 +6,47 @@ import { useRouter } from 'next/router';
 import { fetchAskById, updateAskStatus } from '@/dataServices/fetchAsksAPI';
 import { textShortener } from '@/shared/textShortener';
 import { CgSpinnerTwoAlt } from 'react-icons/cg';
+import useSWR from 'swr';
 const AskDetails = () => {
 	const router = useRouter();
-	const [ask, setAsk] = useState<any>(null);
-	const [isLoading, setIsLoading] = useState<boolean>(false);
-
-	const [askStatus, setAskStatus] = useState<'visible' | 'invisible'>(
-		'visible'
-	);
-	const [askStatusUpdateState, setAskStatusUpdateState] = useState<
-		'idle' | 'inProgress' | 'success' | 'failed'
-	>('idle');
+	const askResData = useSWR(router.query.id, fetchAskById);
+	console.log(askResData);
+	const [isUpdating, setIsUpdating] = useState(false); // State of updating ask status
 	const handleAskStatusUpdates = () => {
-		setAskStatusUpdateState('inProgress');
-		if (askStatus === 'visible') {
-			updateAskStatus(ask.id, 'invisible')
+		setIsUpdating(true);
+		if (askResData.data.status === 'visible') {
+			updateAskStatus(askResData.data.id, 'invisible')
 				.then(() => {
-					setAskStatus('invisible');
-					setAskStatusUpdateState('success');
+					askResData.data.status = 'invisible';
 				})
 				.catch((error) => {
 					console.log(error);
-					setAskStatusUpdateState('failed');
 				})
 				.finally(() => {
-					setAskStatusUpdateState('idle');
+					setIsUpdating(false);
 				});
 		} else {
-			updateAskStatus(ask.id, 'visible')
+			updateAskStatus(askResData.data.id, 'visible')
 				.then(() => {
-					setAskStatus('visible');
-					setAskStatusUpdateState('success');
+					askResData.data.status = 'visible';
 				})
 				.catch((error) => {
 					console.log(error);
-					setAskStatusUpdateState('failed');
 				})
 				.finally(() => {
-					setAskStatusUpdateState('idle');
+					setIsUpdating(false);
 				});
 		}
 	};
 
-	useEffect(() => {
-		if (router.isReady) {
-			setIsLoading(true);
-			const id = router.query.id as string;
-			fetchAskById(id).then((ask) => {
-				setAsk(ask);
-				setAskStatus(ask.status);
-				setIsLoading(false);
-			});
-		}
-	}, [router.isReady, router.query.id]);
-
 	return (
-		ask && (
+		askResData.data && (
 			<div className="relative">
 				<div className="px-8 py-8 lg:p-16 rounded-sm bg-white mx-auto">
 					<div className="flex flex-row gap-4">
 						<div className="shrink-0 border overflow-hidden rounded-full h-fit">
 							<img
-								src={ask.imageUrl}
+								src={askResData.data.imageUrl}
 								alt="eyong_vanisiah"
 								className="object-cover object-center aspect-square w-10"
 							/>
@@ -75,19 +54,20 @@ const AskDetails = () => {
 						<div>
 							<div>
 								<h1 className="font-light text-slate-400s">
-									{ask.userName && ask.userName === ''
-										? ask.userName
-										: ask.contactNumber}
+									{askResData.data.userName &&
+									askResData.data.userName === ''
+										? askResData.data.userName
+										: askResData.data.contactNumber}
 								</h1>
 								<p className="text-slate-600 text-sm pt-2">
-									{textShortener(ask.message, 14)}
+									{textShortener(askResData.data.message, 14)}
 								</p>
 							</div>
 
 							<div className="relative py-4 mt-5 w-fit flex flex-row gap-2">
-								{ask.imageUrl !== '' && (
+								{askResData.data.imageUrl !== '' && (
 									<img
-										src={ask.imageUrl}
+										src={askResData.data.imageUrl}
 										alt="Car needed"
 										className="aspect-video object-center object-cover border rounded-sm w-full max-h-56 sm:max-w-2xl"
 									/>
@@ -102,10 +82,10 @@ const AskDetails = () => {
 							<div className="text-sm text-slate-500">
 								<p>
 									{`${
-										ask.location
-											? ask.location.toUpperCase()
+										askResData.data.location
+											? askResData.data.location.toUpperCase()
 											: 'Buea'
-									}, due ${ask.expirationDate}`}
+									}, due ${askResData.data.expirationDate}`}
 								</p>
 								<p className="block text-xs mt-2">
 									0 Reports, 0 Responses
@@ -113,19 +93,18 @@ const AskDetails = () => {
 							</div>
 							<div className="py-4">
 								<button
-									disabled={
-										askStatusUpdateState === 'inProgress'
-									}
+									disabled={isUpdating}
 									onClick={handleAskStatusUpdates}
 									className="flex flex-row gap-x-2 py-1 px-4 rounded-md border border-primary-500 bg-primary-500 text-white  text-xs font-medium"
 								>
 									<span className="inline-block">
-										{askStatus === 'visible'
+										{askResData.data.status === 'visible'
 											? 'Hide'
 											: 'Unhide'}
 									</span>
 
-									{askStatusUpdateState === 'inProgress' && (
+									{askResData.data.status ===
+										'inProgress' && (
 										<CgSpinnerTwoAlt className="ml-2 inline animate-spin" />
 									)}
 								</button>
