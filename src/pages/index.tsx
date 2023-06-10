@@ -16,7 +16,7 @@ export default function Home() {
 
 	useEffect(() => {
 		routeGuard(router, isAuthenticated);
-	}, [isAuthenticated]);
+	}, [isAuthenticated, router]);
 
 	return (
 		isAuthenticated && (
