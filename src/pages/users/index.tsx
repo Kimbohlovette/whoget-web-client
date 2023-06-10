@@ -32,36 +32,38 @@ const Users = () => {
 			{!data && !isLoading ? (
 				<div className="text-center">Nothing to show</div>
 			) : (
-				<div className="my-16">
-					<table className="table-auto my-5 [&>*]:divide-y w-full">
-						<thead>
-							<tr className="text-sm sm:text-base [&>*]:py-1 text-slate-800 text-left">
-								<th>Name</th>
-								<th className="hidden sm:table-cell">
-									Phone number
-								</th>
-								<th className="hidden lg:table-cell">
-									No. of Asks
-								</th>
-								<th className="hidden md:table-cell">
-									Location
-								</th>
+				!isLoading(
+					<div className="my-16">
+						<table className="table-auto my-5 [&>*]:divide-y w-full">
+							<thead>
+								<tr className="text-sm sm:text-base [&>*]:py-1 text-slate-800 text-left">
+									<th>Name</th>
+									<th className="hidden sm:table-cell">
+										Phone number
+									</th>
+									<th className="hidden lg:table-cell">
+										No. of Asks
+									</th>
+									<th className="hidden md:table-cell">
+										Location
+									</th>
 
-								<th>Action</th>
-							</tr>
-						</thead>
-						<tbody className="text-sm">
-							{data?.map(
-								(
-									user: any,
-									key: React.Key | null | undefined
-								) => (
-									<User key={key} user={user} />
-								)
-							)}
-						</tbody>
-					</table>
-				</div>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody className="text-sm">
+								{data?.map(
+									(
+										user: any,
+										key: React.Key | null | undefined
+									) => (
+										<User key={key} user={user} />
+									)
+								)}
+							</tbody>
+						</table>
+					</div>
+				)
 			)}
 			{error && (
 				<div className="text-red-500 py-5 text-sm">
