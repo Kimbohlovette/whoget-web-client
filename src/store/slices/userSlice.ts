@@ -6,7 +6,7 @@ export interface InitialState {
 	authToken: string;
 }
 const initialState: InitialState = {
-	isAuthenticated: false,
+	isAuthenticated: true,
 	user: null,
 	authToken: '',
 };

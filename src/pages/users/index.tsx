@@ -5,55 +5,31 @@ import { ImSpinner8 } from 'react-icons/im';
 import { fetchUsers, updateUserStatus } from '@/dataServices/fetchUsersAPI';
 import { useAppSelector } from '@/store/hooks';
 import { routeGuard } from '@/utils/routeGuard';
+import useSWR from 'swr';
 // import Image from 'next/image';
 
 const Users = () => {
+	const router = useRouter();
+	const {
+		data,
+		error,
+		isLoading,
+	}: { data?: any[]; error?: any; isLoading?: any } = useSWR(
+		'api/users',
+		fetchUsers
+	);
+	console.log(data);
 	const isAuthenticated = useAppSelector(
 		(state) => state.user.isAuthenticated
 	);
-	const router = useRouter();
-	const [users, setUsers] = useState<any>([]);
-	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState(false);
-	const [page, setPage] = useState(1);
-
-	const handlePrev = () => {
-		setPage((page) => {
-			if (page < 2) {
-				return 1;
-			} else {
-				return page - 1;
-			}
-		});
-	};
-
-	const handleNext = () => {
-		setPage((page) => page + 1);
-	};
 
 	useEffect(() => {
 		routeGuard(router, isAuthenticated);
 	}, [isAuthenticated, router]);
 
-	useEffect(() => {
-		setError(false);
-		setIsLoading(true);
-		fetchUsers(page, 10)
-			.then((users) => {
-				setUsers(users);
-				setIsLoading(false);
-			})
-			.catch((error) => {
-				setError(true);
-				setIsLoading(false);
-			})
-			.finally(() => {
-				setIsLoading(false);
-			});
-	}, [page]);
 	return (
 		<div>
-			{users.length === 0 && !isLoading ? (
+			{!data && !isLoading ? (
 				<div className="text-center">Nothing to show</div>
 			) : (
 				<div className="my-16">
@@ -75,9 +51,14 @@ const Users = () => {
 							</tr>
 						</thead>
 						<tbody className="text-sm">
-							{users.map((u: any, key: any) => (
-								<User key={key} user={u} />
-							))}
+							{data?.map(
+								(
+									user: any,
+									key: React.Key | null | undefined
+								) => (
+									<User key={key} user={user} />
+								)
+							)}
 						</tbody>
 					</table>
 				</div>
@@ -93,33 +74,10 @@ const Users = () => {
 					<ImSpinner8 className="text-secondary-400 text-xl animate-spin text-center" />
 				</div>
 			)}
-			{!error && !isLoading && (
-				<div className="mt-5 flex justify-center flex-row divide-x [&>*]:px-5">
-					<button
-						onClick={handlePrev}
-						className="text-slate-600 hover:underline underline-offset-2"
-					>
-						Prev
-					</button>
-					<button
-						onClick={handleNext}
-						className="text-slate-600 hover:underline underline-offset-2"
-					>
-						Next
-					</button>
-				</div>
-			)}
 		</div>
 	);
 };
 
-const users = () => {
-	return (
-		<div>
-			<Users />
-		</div>
-	);
-};
 const User = (props: { user: any }) => {
 	const navigation = useRouter();
 	const [userUpdateState, setUserUpdateState] = useState<
@@ -218,4 +176,4 @@ const User = (props: { user: any }) => {
 	);
 };
 
-export default users;
+export default Users;

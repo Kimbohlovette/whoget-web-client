@@ -2,6 +2,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { textShortener } from '@/shared/textShortener';
+import { updateAskStatus } from '@/dataServices/fetchAsksAPI';
 
 const ShortAsk = (props: { ask: any }) => {
 	const router = useRouter();
@@ -25,7 +26,17 @@ const ShortAsk = (props: { ask: any }) => {
 				</p>
 			</div>
 			<div>
-				<button className="px-4 py-1 text-white bg-primary-500 rounded-md text-xs font-medium hover:bg-primary-600">
+				<button
+					onClick={() => {
+						updateAskStatus(
+							props.ask.id,
+							props.ask.status === 'visible'
+								? 'invisible'
+								: 'visible'
+						);
+					}}
+					className="px-4 py-1 text-white bg-primary-500 rounded-md text-xs font-medium hover:bg-primary-600"
+				>
 					{props.ask.status === 'visible' ? 'Hide' : 'Unhide'}
 				</button>
 			</div>

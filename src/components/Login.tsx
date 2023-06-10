@@ -1,9 +1,8 @@
 import Image from 'next/image';
 import { Metadata } from 'next';
-import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import React, { useState } from 'react';
+import { useAppDispatch } from '@/store/hooks';
 import { updateAuthStatus } from '@/store/slices/userSlice';
-import { useRouter } from 'next/router';
 
 export const metadata: Metadata = {
 	title: 'Login to your account',
@@ -11,7 +10,6 @@ export const metadata: Metadata = {
 };
 
 const Login = () => {
-	const router = useRouter();
 	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
 	const handleSignin = async () => {
@@ -19,11 +17,6 @@ const Login = () => {
 		setIsAuthenticated(true);
 	};
 
-	useEffect(() => {
-		if (isAuthenticated) {
-			router.push('/');
-		}
-	}, [isAuthenticated]);
 	const logoImage: string = require('../assets/whoget-primary.png');
 	return (
 		<div className="fixed left-0 top-0 bg-white w-full h-full">
