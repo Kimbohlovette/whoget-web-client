@@ -32,7 +32,7 @@ const Users = () => {
 			{!data && !isLoading ? (
 				<div className="text-center">Nothing to show</div>
 			) : (
-				!isLoading(
+				!isLoading && (
 					<div className="my-16">
 						<table className="table-auto my-5 [&>*]:divide-y w-full">
 							<thead>
