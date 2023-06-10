@@ -67,8 +67,7 @@ const Users = () => {
 			)}
 			{error && (
 				<div className="text-red-500 py-5 text-sm">
-					An error occurred while fetching data. Refresh the page
-					again.
+					An error occurred while fetching data.
 				</div>
 			)}
 			{isLoading && (

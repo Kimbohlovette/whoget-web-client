@@ -6,17 +6,24 @@ import { useRouter } from 'next/router';
 import { ReactNode, useEffect } from 'react';
 import { AiOutlineUser } from 'react-icons/ai';
 import { BsEye, BsQuestionCircle } from 'react-icons/bs';
-const inter = Inter({ subsets: ['latin'] });
+import { useAppDispatch } from '../store/hooks';
+import { updateAuthStatus, updateAuthToken } from '@/store/slices/userSlice';
 
 export default function Home() {
 	const router = useRouter();
+	const dispatch = useAppDispatch();
 	const isAuthenticated = useAppSelector(
 		(state) => state.user.isAuthenticated
 	);
-
 	useEffect(() => {
-		routeGuard(router, isAuthenticated);
-	}, [isAuthenticated, router]);
+		const token = localStorage.getItem('@authToken');
+		if (token) {
+			dispatch(updateAuthToken(token));
+			dispatch(updateAuthStatus(true));
+		} else {
+			router.push('/login');
+		}
+	}, [router]);
 
 	return (
 		isAuthenticated && (

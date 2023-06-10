@@ -6,7 +6,7 @@ export interface InitialState {
 	authToken: string;
 }
 const initialState: InitialState = {
-	isAuthenticated: true,
+	isAuthenticated: false,
 	user: null,
 	authToken: '',
 };
@@ -20,8 +20,12 @@ const userSlice = createSlice({
 		setUserInfo: (state, action) => {
 			state.user = action.payload;
 		},
+		updateAuthToken: (state, action) => {
+			state.authToken = action.payload;
+		},
 	},
 });
 
-export const { updateAuthStatus, setUserInfo } = userSlice.actions;
+export const { updateAuthStatus, setUserInfo, updateAuthToken } =
+	userSlice.actions;
 export default userSlice.reducer;

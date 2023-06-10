@@ -3,6 +3,10 @@ import { Metadata } from 'next';
 import React, { useState } from 'react';
 import { useAppDispatch } from '@/store/hooks';
 import { updateAuthStatus } from '@/store/slices/userSlice';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/fbConfig';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata: Metadata = {
 	title: 'Login to your account',
@@ -10,11 +14,49 @@ export const metadata: Metadata = {
 };
 
 const Login = () => {
-	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+	const [authenticating, setAuthenticating] = useState(false);
 	const dispatch = useAppDispatch();
+	const [email, setEmail] = useState<string | null>(null);
+	const [password, setPassword] = useState<string | null>(null);
+
+	// Sign handler function - async
 	const handleSignin = async () => {
-		dispatch(updateAuthStatus(true));
-		setIsAuthenticated(true);
+		if (!email || email === '' || !password || password === '') {
+			// invalid credentials
+			return;
+		} else {
+			setAuthenticating(true);
+			const resToken = signInWithEmailAndPassword(
+				auth,
+				email as string,
+				password as string
+			)
+				.then((userCredential) => {
+					setAuthenticating(false);
+					return userCredential.user.getIdToken();
+				})
+				.catch((error) => {
+					setAuthenticating(false);
+					if (error.code === 'auth/network-request-failed') {
+						toast.error('No internet connection');
+					} else if (
+						error.code === 'auth/user-not-found' ||
+						error.code === 'auth/wrong-password'
+					) {
+						toast.error('Invalid email or password');
+					} else {
+						toast.error('An unkown error occurred');
+					}
+				});
+
+			const jwtToken = await resToken;
+			if (jwtToken) {
+				localStorage.setItem('@authToken', jwtToken);
+				dispatch(updateAuthStatus(jwtToken));
+				dispatch(updateAuthStatus(true));
+				toast.success('Signing successful! 🥂');
+			}
+		}
 	};
 
 	const logoImage: string = require('../assets/whoget-primary.png');
@@ -43,12 +85,16 @@ const Login = () => {
 							</label>
 							<div className="mt-2">
 								<input
+									value={email || ''}
+									onChange={(event) =>
+										setEmail(event.target.value)
+									}
 									id="email"
 									name="email"
 									type="email"
 									autoComplete="email"
 									required
-									className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+									className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 invalid:ring-red-500 invalid:shadow-red-200"
 								/>
 							</div>
 						</div>
@@ -72,22 +118,26 @@ const Login = () => {
 							</div>
 							<div className="mt-2">
 								<input
+									value={password || ''}
+									onChange={(event) =>
+										setPassword(event.target.value)
+									}
 									id="password"
 									name="password"
 									type="password"
 									autoComplete="current-password"
 									required
-									className="block w-full rounded-md border-0 px-2 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+									className="block w-full rounded-md border-0 px-2 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 invalid:ring-red-500 invalid:shadow-red-200"
 								/>
 							</div>
 						</div>
-
 						<div>
 							<button
+								disabled={authenticating}
 								onClick={handleSignin}
 								className="flex w-full justify-center rounded-md bg-primary-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
 							>
-								Sign in
+								{authenticating ? 'Signing in ...' : 'Signin'}
 							</button>
 						</div>
 					</div>
