@@ -5,8 +5,7 @@ import { useAppDispatch } from '@/store/hooks';
 import { updateAuthStatus } from '@/store/slices/userSlice';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/fbConfig';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 export const metadata: Metadata = {
 	title: 'Login to your account',
