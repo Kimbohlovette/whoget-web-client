@@ -41,13 +41,12 @@ const Users = () => {
 									<th className="hidden sm:table-cell">
 										Phone number
 									</th>
-									<th className="hidden lg:table-cell">
-										No. of Asks
-									</th>
 									<th className="hidden md:table-cell">
 										Location
 									</th>
-
+									<th className="hidden lg:table-cell">
+										No. of Asks
+									</th>
 									<th>Action</th>
 								</tr>
 							</thead>

@@ -8,10 +8,8 @@ import { toast } from 'react-toastify';
 import useSWR, { SWRResponse } from 'swr';
 
 const Asks = () => {
-	const { data, error, isLoading }: SWRResponse<any, Error, boolean> = useSWR(
-		'api/asks',
-		fetchAsks
-	);
+	const { data, error, isLoading }: SWRResponse<any, Error, boolean> =
+		useSWR(fetchAsks);
 	useEffect(() => {
 		if (error) {
 			toast.error('No internet connection');

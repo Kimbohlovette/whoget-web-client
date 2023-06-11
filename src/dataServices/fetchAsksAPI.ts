@@ -15,11 +15,7 @@ export const fetchAsks = async (page: number, limit: number) => {
 		);
 		return (await response.json()).asks;
 	} catch (error) {
-		if ((error as Error).name === 'TypeError') {
-			throw Error('NO_INTERNET_CONNECTION');
-		} else {
-			throw Error('UNKNOWN_ERROR');
-		}
+		throw Error('NO_INTERNET_CONNECTION');
 	}
 };
 
