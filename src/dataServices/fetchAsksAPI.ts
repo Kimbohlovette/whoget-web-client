@@ -1,6 +1,15 @@
+import { AuthErrorCodes } from 'firebase/auth';
+
 const BASE_URL = 'https://whoget-app-server.onrender.com/api/v1/';
 //const BASE_URL = 'http://localhost:5000/api/v1/';
-const token = '';
+
+class AuthError extends Error {
+	constructor(message: string, name: string) {
+		super(message);
+		this.name = name;
+	}
+}
+
 export const fetchAsks = async (page: number, limit: number) => {
 	try {
 		const response = await fetch(
@@ -10,7 +19,6 @@ export const fetchAsks = async (page: number, limit: number) => {
 				headers: {
 					'Access-Control-Allow-Origin': 'no-cors',
 					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${token}`,
 				},
 			}
 		);
@@ -25,28 +33,25 @@ export const updateAskStatus = async (
 	askId: string,
 	status: 'visible' | 'invisible'
 ) => {
+	const token = localStorage.getItem('@authToken');
 	try {
-		const response = await fetch(`${BASE_URL}asks/${askId}`, {
+		const response = await fetch(`${BASE_URL}asks/${askId}/status`, {
 			body: JSON.stringify({ status }),
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`,
 			},
 		});
-		return (await response.json()).updated;
+		return response.json();
 	} catch (error) {
 		console.log(error);
-		return new Error('Error occured while updating updating ask');
 	}
 };
 
 export const fetchAsksByUserId = async (userId: string) => {
 	try {
-		const response = await fetch(`${BASE_URL}users/${userId}/asks`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		});
+		const response = await fetch(`${BASE_URL}users/${userId}/asks`);
 		return await response.json();
 	} catch (error) {
 		console.log(error);
@@ -56,11 +61,7 @@ export const fetchAsksByUserId = async (userId: string) => {
 
 export const fetchAskById = async (id: string) => {
 	try {
-		const response = await fetch(`${BASE_URL}asks/${id}`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		});
+		const response = await fetch(`${BASE_URL}asks/${id}`);
 		return (await response.json()).ask;
 	} catch (error) {
 		console.log(error);

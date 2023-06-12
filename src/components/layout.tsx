@@ -4,7 +4,7 @@ import SideBar from './SideBar';
 
 export default function Layout(props: { children: ReactNode }) {
 	return (
-		<div className="flex flex-col">
+		<div className="container mx-auto">
 			<div className="flex-1 flex flex-row py-4">
 				<div className="hidden md:block">
 					<SideBar />

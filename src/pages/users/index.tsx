@@ -11,13 +11,8 @@ import { toast } from 'react-toastify';
 
 const Users = () => {
 	const router = useRouter();
-	const {
-		data,
-		error,
-		isLoading,
-	}: { data?: any[]; error?: any; isLoading?: any } = useSWR(
-		'/api/v1/users',
-		() => fetchUsers(1, 100)
+	const { data, error, isLoading } = useSWR('/api/v1/users', () =>
+		fetchUsers(1, 100)
 	);
 	const isAuthenticated = useAppSelector(
 		(state) => state.user.isAuthenticated

@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useEffect, useState } from 'react';
-import { HiChevronLeft, HiChevronRight, HiX } from 'react-icons/hi';
+import React, { useState } from 'react';
+import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { fetchAskById, updateAskStatus } from '@/dataServices/fetchAsksAPI';
-import { textShortener } from '@/shared/textShortener';
 import { CgSpinnerTwoAlt } from 'react-icons/cg';
 import useSWR from 'swr';
+import { toast } from 'react-toastify';
 const AskDetails = () => {
 	const router = useRouter();
 	const askResData = useSWR(router.query.id, fetchAskById);
@@ -15,22 +15,40 @@ const AskDetails = () => {
 		setIsUpdating(true);
 		if (askResData.data.status === 'visible') {
 			updateAskStatus(askResData.data.id, 'invisible')
-				.then(() => {
-					askResData.data.status = 'invisible';
+				.then((data) => {
+					console.log(data);
+					if (data.success) {
+						askResData.data.status = 'invisible';
+						toast.success('Ask updated successfully!');
+						setIsUpdating(false);
+					} else {
+						if (data.code === 'auth/id-token-expired') {
+							console.log('Token expired');
+							router.push('/login');
+						}
+					}
 				})
 				.catch((error) => {
-					console.log(error);
-				})
-				.finally(() => {
-					setIsUpdating(false);
+					toast.error('Could not update ask status!');
 				});
 		} else {
 			updateAskStatus(askResData.data.id, 'visible')
-				.then(() => {
-					askResData.data.status = 'visible';
+				.then((data) => {
+					console.log(data);
+					if (data.success) {
+						askResData.data.status = 'visible';
+						toast.success('Ask updated successfully!');
+						setIsUpdating(false);
+					} else {
+						if (data.code === 'auth/id-token-expired') {
+							console.log('Token expired');
+							router.push('/login');
+						}
+					}
 				})
-				.catch((error) => {
-					console.log(error);
+				.catch((err) => {
+					toast.error('Could not update ask status!');
+					console.log(err.code);
 				})
 				.finally(() => {
 					setIsUpdating(false);
@@ -48,7 +66,10 @@ const AskDetails = () => {
 								height={100}
 								width={200}
 								src={askResData.data.owner.profileImage}
-								alt={askResData.data.userName}
+								alt={
+									askResData.data.userName ||
+									'Ask details image'
+								}
 								className="object-cover object-center aspect-square w-10"
 							/>
 						</div>
@@ -68,7 +89,7 @@ const AskDetails = () => {
 												width={200}
 												src={askResData.data.imageUrl}
 												alt="Car needed"
-												className="aspect-video object-center object-cover border rounded-md w-full sm:max-w-4xl"
+												className="aspect-video object-center object-cover border rounded-md w-full lg:max-w-2xl"
 											/>
 										)}
 										<button className="absolute -left-12 top-1/3 rounded-full hover:bg-slate-200 p-1">
@@ -79,7 +100,7 @@ const AskDetails = () => {
 										</button>
 									</div>
 								)}
-								<p className="text-slate-600 text-sm py-4 bg-slate-50 px-2 tracking-wide rounded-md my-5 lg:max-w-md">
+								<p className="text-slate-600 text-sm py-4 bg-slate-50 px-2 tracking-wide rounded-md my-5 lg:max-w-2xl">
 									{askResData.data.message}
 								</p>
 
@@ -111,15 +132,15 @@ const AskDetails = () => {
 									onClick={handleAskStatusUpdates}
 									className="flex flex-row gap-x-2 py-1 px-4 rounded-md border border-primary-500 bg-primary-500 text-white  text-xs font-medium"
 								>
-									<span className="inline-block">
-										{askResData.data.status === 'visible'
-											? 'Hide'
-											: 'Unhide'}
-									</span>
-
-									{askResData.data.status ===
-										'inProgress' && (
-										<CgSpinnerTwoAlt className="ml-2 inline animate-spin" />
+									{isUpdating ? (
+										'Updating...'
+									) : (
+										<span className="inline-block">
+											{askResData.data.status ===
+											'visible'
+												? 'Hide'
+												: 'Unhide'}
+										</span>
 									)}
 								</button>
 							</div>
