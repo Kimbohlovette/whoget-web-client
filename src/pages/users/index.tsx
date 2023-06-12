@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ImSpinner8 } from 'react-icons/im';
@@ -6,6 +5,8 @@ import { fetchUsers, updateUserStatus } from '@/dataServices/fetchUsersAPI';
 import { useAppSelector } from '@/store/hooks';
 import { routeGuard } from '@/utils/routeGuard';
 import useSWR from 'swr';
+import Image from 'next/image';
+import { toast } from 'react-toastify';
 // import Image from 'next/image';
 
 const Users = () => {
@@ -23,13 +24,21 @@ const Users = () => {
 	);
 
 	useEffect(() => {
+		if (error) {
+			return () => {
+				toast.error('An error occured while fetching users');
+			};
+		}
+	}, [error]);
+
+	useEffect(() => {
 		routeGuard(router, isAuthenticated);
 	}, [isAuthenticated, router]);
 
 	return (
 		<div>
 			{!data && !isLoading ? (
-				<div className="text-center">Nothing to show</div>
+				<button>Refresh Page</button>
 			) : (
 				!isLoading && (
 					<div className="my-16">
@@ -62,11 +71,6 @@ const Users = () => {
 						</table>
 					</div>
 				)
-			)}
-			{!data && error && (
-				<div className="text-red-500 py-5 text-sm">
-					An error occurred while fetching data.
-				</div>
 			)}
 			{isLoading && (
 				<div className="flex justify-center">
@@ -134,7 +138,9 @@ const User = (props: { user: any }) => {
 				<div className="max-w-xs py-5 pl-2">
 					<div className="flex flex-row gap-x-2 items-center">
 						<div className="h-10 aspect-square rounded-full bg-slate-50 border overflow-hidden">
-							<img
+							<Image
+								width={200}
+								height={100}
 								src={props.user.profileImage}
 								className="h-full aspect-square object-center object-cover"
 								alt=""

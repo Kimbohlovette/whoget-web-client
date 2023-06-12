@@ -10,7 +10,6 @@ import useSWR from 'swr';
 const AskDetails = () => {
 	const router = useRouter();
 	const askResData = useSWR(router.query.id, fetchAskById);
-	console.log(askResData);
 	const [isUpdating, setIsUpdating] = useState(false); // State of updating ask status
 	const handleAskStatusUpdates = () => {
 		setIsUpdating(true);
@@ -45,47 +44,62 @@ const AskDetails = () => {
 				<div className="px-8 py-8 lg:p-16 rounded-sm bg-white mx-auto">
 					<div className="flex flex-row gap-4">
 						<div className="shrink-0 border overflow-hidden rounded-full h-fit">
-							<img
-								src={askResData.data.imageUrl}
-								alt="eyong_vanisiah"
+							<Image
+								height={100}
+								width={200}
+								src={askResData.data.owner.profileImage}
+								alt={askResData.data.userName}
 								className="object-cover object-center aspect-square w-10"
 							/>
 						</div>
 						<div>
-							<div>
+							<div className="pt-2">
 								<h1 className="font-light text-slate-400s">
-									{askResData.data.userName &&
-									askResData.data.userName === ''
-										? askResData.data.userName
-										: askResData.data.contactNumber}
+									{askResData.data.owner.name}
 								</h1>
-								<p className="text-slate-600 text-sm pt-2">
-									{textShortener(askResData.data.message, 14)}
-								</p>
 							</div>
 
-							<div className="relative py-4 mt-5 w-fit flex flex-row gap-2">
-								{askResData.data.imageUrl !== '' && (
-									<img
-										src={askResData.data.imageUrl}
-										alt="Car needed"
-										className="aspect-video object-center object-cover border rounded-sm w-full max-h-56 sm:max-w-2xl"
-									/>
+							<div className="text-sm text-slate-500 py-5">
+								{askResData.data.imageUrl && (
+									<div className="relative py-4 mt-5 w-fit flex flex-row gap-2">
+										{askResData.data.imageUrl !== '' && (
+											<Image
+												height={100}
+												width={200}
+												src={askResData.data.imageUrl}
+												alt="Car needed"
+												className="aspect-video object-center object-cover border rounded-md w-full sm:max-w-4xl"
+											/>
+										)}
+										<button className="absolute -left-12 top-1/3 rounded-full hover:bg-slate-200 p-1">
+											<HiChevronLeft className="text-2xl text-slate-500" />
+										</button>
+										<button className="absolute -right-12 top-1/3 rounded-full hover:bg-slate-200 p-1">
+											<HiChevronRight className="text-2xl text-slate-500" />
+										</button>
+									</div>
 								)}
-								<button className="absolute -left-12 top-1/3 rounded-full hover:bg-slate-200 p-1">
-									<HiChevronLeft className="text-2xl text-slate-500" />
-								</button>
-								<button className="absolute -right-12 top-1/3 rounded-full hover:bg-slate-200 p-1">
-									<HiChevronRight className="text-2xl text-slate-500" />
-								</button>
-							</div>
-							<div className="text-sm text-slate-500">
-								<p>
-									{`${
-										askResData.data.location
-											? askResData.data.location.toUpperCase()
-											: 'Buea'
-									}, due ${askResData.data.expirationDate}`}
+								<p className="text-slate-600 text-sm py-4 bg-slate-50 px-2 tracking-wide rounded-md my-5 lg:max-w-md">
+									{askResData.data.message}
+								</p>
+
+								<p className="">
+									<span className="font-md text-base text-primary-400">
+										Expiration Date:{' '}
+									</span>
+									<span className="">
+										{new Date(
+											askResData.data.expirationDate
+										).toDateString()}
+									</span>
+								</p>
+								<p className="">
+									<span className="font-md text-base text-primary-400">
+										Location:{' '}
+									</span>
+									<span className="">
+										{askResData.data.location}
+									</span>
 								</p>
 								<p className="block text-xs mt-2">
 									0 Reports, 0 Responses

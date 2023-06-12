@@ -1,8 +1,7 @@
-//const BASE_URL = 'https://whoget-app-server.onrender.com/api/v1/';
-const BASE_URL = 'http://localhost:5000/api/v1/';
-
+const BASE_URL = 'https://whoget-app-server.onrender.com/api/v1/';
+//const BASE_URL = 'http://localhost:5000/api/v1/';
+const token = '';
 export const fetchAsks = async (page: number, limit: number) => {
-	const token = localStorage.getItem('@authToken') || '';
 	try {
 		const response = await fetch(
 			`${BASE_URL}asks?page=${page}&limit=${limit}`,
@@ -43,7 +42,11 @@ export const updateAskStatus = async (
 
 export const fetchAsksByUserId = async (userId: string) => {
 	try {
-		const response = await fetch(`${BASE_URL}users/${userId}/asks`);
+		const response = await fetch(`${BASE_URL}users/${userId}/asks`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		return await response.json();
 	} catch (error) {
 		console.log(error);
@@ -53,7 +56,11 @@ export const fetchAsksByUserId = async (userId: string) => {
 
 export const fetchAskById = async (id: string) => {
 	try {
-		const response = await fetch(`${BASE_URL}asks/${id}`);
+		const response = await fetch(`${BASE_URL}asks/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		return (await response.json()).ask;
 	} catch (error) {
 		console.log(error);

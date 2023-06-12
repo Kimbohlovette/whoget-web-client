@@ -1,5 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { FaWhatsappSquare } from 'react-icons/fa';
 import { HiOutlineMail, HiOutlineLocationMarker } from 'react-icons/hi';
 import { BsTelephone } from 'react-icons/bs';
@@ -7,12 +6,14 @@ import { CgSpinnerTwoAlt } from 'react-icons/cg';
 
 import ShortAsk from '@/components/ShortAsk';
 import { useRouter } from 'next/router';
-import { fetchUserById, updateUserStatus } from '@/dataServices/fetchUsersAPI';
+import { fetchUserById } from '@/dataServices/fetchUsersAPI';
 import { fetchAsksByUserId } from '@/dataServices/fetchAsksAPI';
 import { routeGuard } from '@/utils/routeGuard';
 import { ImSpinner8 } from 'react-icons/im';
 import { useAppSelector } from '@/store/hooks';
 import useSWR from 'swr';
+import Image from 'next/image';
+import { url } from 'inspector';
 const UserDetails = () => {
 	const router = useRouter();
 	const isAuthenticated = useAppSelector(
@@ -32,7 +33,7 @@ const UserDetails = () => {
 			<div className="flex flex-col gap-8 max-h-min sm:flex-row">
 				<div className="flex-1 flex justify-center items-center sm:justify-start">
 					<div className="h-fit rounded-md overflow-hidden aspect-square">
-						<img
+						<Image
 							height={400}
 							width={300}
 							src={userResponse.data.profileImage}
