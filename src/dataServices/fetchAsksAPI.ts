@@ -16,7 +16,6 @@ export const fetchAsks = async (page: number, limit: number) => {
 			}
 		);
 		const result = await response.json();
-		console.log(result);
 		return result.asks;
 	} catch (error) {
 		console.log(error);

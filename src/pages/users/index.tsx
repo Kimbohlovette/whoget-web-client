@@ -14,8 +14,10 @@ const Users = () => {
 		data,
 		error,
 		isLoading,
-	}: { data?: any[]; error?: any; isLoading?: any } = useSWR('1', fetchUsers);
-	console.log(data);
+	}: { data?: any[]; error?: any; isLoading?: any } = useSWR(
+		'/api/v1/users',
+		() => fetchUsers(1, 100)
+	);
 	const isAuthenticated = useAppSelector(
 		(state) => state.user.isAuthenticated
 	);
@@ -61,7 +63,7 @@ const Users = () => {
 					</div>
 				)
 			)}
-			{error && (
+			{!data && error && (
 				<div className="text-red-500 py-5 text-sm">
 					An error occurred while fetching data.
 				</div>

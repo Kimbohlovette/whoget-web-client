@@ -1,22 +1,23 @@
 import { fetchAsks, updateAskStatus } from '@/dataServices/fetchAsksAPI';
 import { textShortener } from '@/shared/textShortener';
-import { useAppSelector } from '@/store/hooks';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { CgSpinnerTwoAlt } from 'react-icons/cg';
 import { ImSpinner8 } from 'react-icons/im';
 import { toast } from 'react-toastify';
-import useSWR, { SWRResponse } from 'swr';
+import useSWR from 'swr';
 
 const Asks = () => {
-	const { data, error, isLoading } = useSWR('1', fetchAsks);
-	console.log(data);
+	const { data, error, isLoading } = useSWR('/api/v1/asks', () =>
+		fetchAsks(1, 100)
+	);
 	useEffect(() => {
 		if (error) {
 			toast.error('No internet connection');
 		}
 	}, []);
-	return (
+	return !data && !isLoading ? (
+		<div className="text-center">Nothing to show</div>
+	) : (
 		<div>
 			{data && (
 				<div>
@@ -37,7 +38,7 @@ const Asks = () => {
 								</tr>
 							</thead>
 							<tbody className="text-sm">
-								{data?.map((ask: any, key: any) => {
+								{data.map((ask: any, key: any) => {
 									return <AskItem key={key} ask={ask} />;
 								})}
 							</tbody>
@@ -58,7 +59,6 @@ const Asks = () => {
 export default Asks;
 
 const AskItem = (props: { ask: any }) => {
-	console.log(props.ask);
 	const router = useRouter();
 	const [askStatus, setAskStatus] = useState<'visible' | 'invisible'>(
 		props.ask.status
