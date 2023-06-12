@@ -14,10 +14,7 @@ const Users = () => {
 		data,
 		error,
 		isLoading,
-	}: { data?: any[]; error?: any; isLoading?: any } = useSWR(
-		'api/users',
-		fetchUsers
-	);
+	}: { data?: any[]; error?: any; isLoading?: any } = useSWR('1', fetchUsers);
 	console.log(data);
 	const isAuthenticated = useAppSelector(
 		(state) => state.user.isAuthenticated

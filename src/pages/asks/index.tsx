@@ -1,5 +1,6 @@
 import { fetchAsks, updateAskStatus } from '@/dataServices/fetchAsksAPI';
 import { textShortener } from '@/shared/textShortener';
+import { useAppSelector } from '@/store/hooks';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { CgSpinnerTwoAlt } from 'react-icons/cg';
@@ -8,8 +9,8 @@ import { toast } from 'react-toastify';
 import useSWR, { SWRResponse } from 'swr';
 
 const Asks = () => {
-	const { data, error, isLoading }: SWRResponse<any, Error, boolean> =
-		useSWR(fetchAsks);
+	const { data, error, isLoading } = useSWR('1', fetchAsks);
+	console.log(data);
 	useEffect(() => {
 		if (error) {
 			toast.error('No internet connection');

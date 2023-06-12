@@ -1,7 +1,8 @@
-const BASE_URL = 'https://whoget-app-server.onrender.com/api/v1/';
-// const BASE_URL = 'http://localhost:5000/api/v1/';
+//const BASE_URL = 'https://whoget-app-server.onrender.com/api/v1/';
+const BASE_URL = 'http://localhost:5000/api/v1/';
 
 export const fetchAsks = async (page: number, limit: number) => {
+	const token = localStorage.getItem('@authToken') || '';
 	try {
 		const response = await fetch(
 			`${BASE_URL}asks?page=${page}&limit=${limit}`,
@@ -10,12 +11,15 @@ export const fetchAsks = async (page: number, limit: number) => {
 				headers: {
 					'Access-Control-Allow-Origin': 'no-cors',
 					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${token}`,
 				},
 			}
 		);
-		return (await response.json()).asks;
+		const result = await response.json();
+		console.log(result);
+		return result.asks;
 	} catch (error) {
-		throw Error('NO_INTERNET_CONNECTION');
+		console.log(error);
 	}
 };
 
