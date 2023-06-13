@@ -1,11 +1,12 @@
-import Loading from '@/components/Loading';
 import { useAppSelector } from '@/store/hooks';
-import { routeGuard } from '@/utils/routeGuard';
-import { Inter } from 'next/font/google';
 import { useRouter } from 'next/router';
 import { ReactNode, useEffect } from 'react';
 import { AiOutlineUser } from 'react-icons/ai';
 import { BsEye, BsQuestionCircle } from 'react-icons/bs';
+import { CiWarning } from 'react-icons/ci';
+import { IoBanOutline } from 'react-icons/io5';
+import { FiEyeOff } from 'react-icons/fi';
+
 import { useAppDispatch } from '../store/hooks';
 import { updateAuthStatus, updateAuthToken } from '@/store/slices/userSlice';
 
@@ -28,24 +29,42 @@ export default function Home() {
 	return (
 		isAuthenticated && (
 			<main>
-				<div className="cards grid grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] gap-4">
+				<div className="cards grid grid-cols-[repeat(auto-fit,_minmax(250px,_1fr))] gap-8">
 					<Card
 						title="Signups"
-						figure={179}
+						figure={2}
 						icon={<AiOutlineUser />}
 						pastDays={18}
 					/>
 					<Card
 						title="Asks"
-						figure={1467}
+						figure={6}
 						icon={<BsQuestionCircle />}
 						pastDays={34}
 					/>
 					<Card
 						title="Page Views"
-						figure={791701}
+						figure={791}
 						icon={<BsEye />}
 						pastDays={54}
+					/>
+					<Card
+						title="Reports"
+						figure={0}
+						icon={<CiWarning />}
+						pastDays={54}
+					/>
+					<Card
+						title="Banned"
+						figure={0}
+						icon={<IoBanOutline />}
+						pastDays={54}
+					/>
+					<Card
+						title="Hidden"
+						figure={0}
+						icon={<FiEyeOff />}
+						pastDays={14}
 					/>
 				</div>
 			</main>

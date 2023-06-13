@@ -11,17 +11,16 @@ class AuthError extends Error {
 }
 
 export const fetchAsks = async (page: number, limit: number) => {
+	const token = localStorage.getItem('@authToken');
 	try {
-		const response = await fetch(
-			`${BASE_URL}asks?page=${page}&limit=${limit}`,
-			{
-				method: 'GET',
-				headers: {
-					'Access-Control-Allow-Origin': 'no-cors',
-					'Content-Type': 'application/json',
-				},
-			}
-		);
+		const response = await fetch(`${BASE_URL}asks/all`, {
+			method: 'GET',
+			headers: {
+				'Access-Control-Allow-Origin': 'no-cors',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`,
+			},
+		});
 		const result = await response.json();
 		return result.asks;
 	} catch (error) {

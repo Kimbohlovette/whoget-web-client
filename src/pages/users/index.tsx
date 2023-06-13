@@ -7,6 +7,7 @@ import { routeGuard } from '@/utils/routeGuard';
 import useSWR from 'swr';
 import Image from 'next/image';
 import { toast } from 'react-toastify';
+import { data } from 'autoprefixer';
 // import Image from 'next/image';
 
 const Users = () => {
@@ -78,9 +79,7 @@ const Users = () => {
 
 const User = (props: { user: any }) => {
 	const navigation = useRouter();
-	const [userUpdateState, setUserUpdateState] = useState<
-		'idle' | 'inProgress' | 'failed' | 'success'
-	>('idle');
+	const [isUpdating, setIsUpdating] = useState<boolean>(false);
 	const [userStatus, setUserStatus] = useState<'active' | 'inactive'>(
 		'active'
 	);
@@ -92,33 +91,28 @@ const User = (props: { user: any }) => {
 
 	const handleUpdateStatus = () => {
 		if (userStatus === 'active') {
-			setUserUpdateState('inProgress');
+			setIsUpdating(true);
 			updateUserStatus(props.user.id, 'inactive')
 				.then(() => {
 					setUserStatus('inactive');
-					setUserUpdateState('success');
-					setUserUpdateState('success');
 				})
 				.catch((error) => {
-					console.log(error);
-					setUserUpdateState('failed');
+					console.log('Failed', error);
 				})
 				.finally(() => {
-					setUserUpdateState('idle');
+					setIsUpdating(false);
 				});
 		} else {
-			setUserUpdateState('inProgress');
+			setIsUpdating(true);
 			updateUserStatus(props.user.id, 'active')
 				.then(() => {
 					setUserStatus('active');
-					setUserUpdateState('success');
 				})
 				.catch((error) => {
-					console.log(error);
-					setUserUpdateState('failed');
+					console.log('Failed', error);
 				})
 				.finally(() => {
-					setUserUpdateState('idle');
+					setIsUpdating(false);
 				});
 		}
 	};
@@ -157,7 +151,7 @@ const User = (props: { user: any }) => {
 
 			<td className="relative z-50">
 				<button
-					disabled={userUpdateState === 'inProgress'}
+					disabled={isUpdating}
 					onClick={handleUpdateStatus}
 					className={
 						userStatus === 'active'
@@ -165,11 +159,11 @@ const User = (props: { user: any }) => {
 							: 'py-1 px-4 rounded-md border-primary-500 bg-primary-500 text-sm text-white font-medium'
 					}
 				>
-					{userStatus === 'active' ? 'Ban' : 'Unband'}
-
-					{userUpdateState === 'inProgress' && (
-						<ImSpinner8 className="inline ml-2 animate-spin" />
-					)}
+					{!isUpdating
+						? props.user.status === 'active'
+							? 'Ban'
+							: 'Unband'
+						: 'Updating'}
 				</button>
 			</td>
 		</tr>

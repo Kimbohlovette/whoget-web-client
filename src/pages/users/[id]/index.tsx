@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaWhatsappSquare } from 'react-icons/fa';
 import { HiOutlineMail, HiOutlineLocationMarker } from 'react-icons/hi';
 import { BsTelephone } from 'react-icons/bs';
@@ -6,20 +6,23 @@ import { CgSpinnerTwoAlt } from 'react-icons/cg';
 
 import ShortAsk from '@/components/ShortAsk';
 import { useRouter } from 'next/router';
-import { fetchUserById } from '@/dataServices/fetchUsersAPI';
+import { fetchUserById, updateUserStatus } from '@/dataServices/fetchUsersAPI';
 import { fetchAsksByUserId } from '@/dataServices/fetchAsksAPI';
 import { routeGuard } from '@/utils/routeGuard';
 import { ImSpinner8 } from 'react-icons/im';
 import { useAppSelector } from '@/store/hooks';
 import useSWR from 'swr';
 import Image from 'next/image';
-import { url } from 'inspector';
+import { toast } from 'react-toastify';
 const UserDetails = () => {
 	const router = useRouter();
 	const isAuthenticated = useAppSelector(
 		(state) => state.user.isAuthenticated
 	);
-
+	const [isUpdating, setIsUpdating] = useState<boolean>(false);
+	const [userStatus, setUserStatus] = useState<'active' | 'inactive'>(
+		'active'
+	);
 	const userResponse = useSWR(router.query.id, fetchUserById);
 
 	const userAsksResponse = useSWR(router.query.id, fetchAsksByUserId);
@@ -27,6 +30,38 @@ const UserDetails = () => {
 	useEffect(() => {
 		routeGuard(router, isAuthenticated);
 	}, [isAuthenticated, router]);
+
+	const handleUpdateStatus = () => {
+		if (userStatus === 'active') {
+			setIsUpdating(true);
+			updateUserStatus(userResponse.data.id, 'inactive')
+				.then((data) => {
+					setUserStatus(data.status);
+					toast.success('User status updated successfully!');
+				})
+				.catch((error) => {
+					console.log(error);
+					toast.error('Oops! Update operation failed.');
+				})
+				.finally(() => {
+					setIsUpdating(false);
+				});
+		} else {
+			setIsUpdating(true);
+			updateUserStatus(userResponse.data.id, 'active')
+				.then((data) => {
+					setUserStatus(data.status);
+					toast.success('User status updated successfully!');
+				})
+				.catch((error) => {
+					console.log(error);
+					toast.error('Oops! Update operation failed.');
+				})
+				.finally(() => {
+					setIsUpdating(false);
+				});
+		}
+	};
 
 	return userResponse.data ? (
 		<div>
@@ -82,14 +117,17 @@ const UserDetails = () => {
 					</div>
 					<div className="mt-5 flex items-center justify-center sm:justify-start">
 						<button
+							onClick={handleUpdateStatus}
 							disabled={userResponse.isLoading}
 							className={
 								'w-full max-w-[120px] z-50 py-2 px-4 rounded-md border-primary-500 bg-primary-500 text-xs text-white font-semibold'
 							}
 						>
-							{userResponse.data.status === 'active'
-								? 'Ban'
-								: 'Unband'}
+							{!isUpdating
+								? userStatus === 'active'
+									? 'Ban'
+									: 'Unband'
+								: 'Updating...'}
 
 							{userResponse.isLoading && (
 								<CgSpinnerTwoAlt className="text-secondary-400 ml-2 inline animate-spin" />
