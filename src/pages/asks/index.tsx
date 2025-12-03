@@ -16,28 +16,29 @@ const Asks = () => {
 		}
 	}, []);
 	return !data && !isLoading ? (
-		<div className="text-center">Nothing to show</div>
+		<div className="flex flex-col items-center justify-center py-16">
+			<p className="text-gray-500">Nothing to show</p>
+		</div>
 	) : (
 		<div>
+			<div className="mb-8">
+				<h1 className="text-3xl font-bold text-gray-800 mb-2">Asks</h1>
+				<p className="text-gray-600">Manage user requests and inquiries</p>
+			</div>
+
 			{data && (
-				<div>
-					<div className="mt-2">
-						<table className="table-auto my-5 [&>*]:divide-y w-full">
-							<thead className="border-b border-primary-100">
-								<tr className="text-sm sm:text-base [&>*]:py-1 text-slate-800 text-left">
-									<th>Message</th>
-
-									<th className="hidden lg:table-cell">
-										Due date
-									</th>
-
-									<th className="hidden sm:table-cell">
-										Owner
-									</th>
-									<th>Action</th>
+				<div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+					<div className="overflow-x-auto">
+						<table className="w-full">
+							<thead className="bg-gray-50 border-b border-gray-200">
+								<tr className="text-sm font-semibold text-gray-700">
+									<th className="text-left py-4 px-6">Message</th>
+									<th className="text-left py-4 px-6 hidden lg:table-cell">Due Date</th>
+									<th className="text-left py-4 px-6 hidden sm:table-cell">Owner</th>
+									<th className="text-left py-4 px-6">Status</th>
 								</tr>
 							</thead>
-							<tbody className="text-sm">
+							<tbody className="divide-y divide-gray-100">
 								{data.map((ask: any, key: any) => {
 									return <AskItem key={key} ask={ask} />;
 								})}
@@ -48,8 +49,8 @@ const Asks = () => {
 			)}
 
 			{isLoading && (
-				<div className="flex justify-center">
-					<ImSpinner8 className="text-secondary-400 text-xl animate-spin text-center" />
+				<div className="flex justify-center py-16">
+					<ImSpinner8 className="text-blue-600 text-3xl animate-spin" />
 				</div>
 			)}
 		</div>
@@ -98,36 +99,36 @@ const AskItem = (props: { ask: any }) => {
 	};
 	return (
 		<tr
-			onClick={() => {
-				router.push(`/asks/${props.ask.id}`);
-			}}
-			className="relative z- text-slate-600 py-5 hover:bg-slate-200 cursor-pointer"
+			onClick={() => router.push(`/asks/${props.ask.id}`)}
+			className="hover:bg-gray-50 transition-colors cursor-pointer"
 		>
-			<td>
-				<div className="max-w-xs py-5 px-2">
+			<td className="py-4 px-6">
+				<div className="max-w-md text-gray-800">
 					{textShortener(props.ask.message, 14)}
 				</div>
 			</td>
-			<td className="hidden lg:table-cell">
-				<div className="py-5">{props.ask.expirationDate}</div>
+			<td className="py-4 px-6 text-gray-600 hidden lg:table-cell">
+				{props.ask.expirationDate}
 			</td>
-			<td className="hidden sm:table-cell">
-				<div className="py-5">{props.ask.userName || 'N/A'} </div>
+			<td className="py-4 px-6 text-gray-600 hidden sm:table-cell">
+				{props.ask.userName || 'N/A'}
 			</td>
-			<td className="pr-2">
+			<td className="py-4 px-6">
 				<button
 					disabled={askStatusUpdateState === 'inProgress'}
-					onClick={handleAskStatusUpdates}
-					className={`flex flex-row gap-x-2 py-2 px-4 rounded-md border border-primary-500 text-xs font-medium
-						${props.ask.status === 'visible' ? '' : 'bg-primary-500 text-white'}`}
+					onClick={(e) => {
+						e.stopPropagation();
+						handleAskStatusUpdates();
+					}}
+					className={`px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
+						props.ask.status === 'visible'
+							? 'bg-yellow-50 text-yellow-600 hover:bg-yellow-100 border border-yellow-200'
+							: 'bg-green-50 text-green-600 hover:bg-green-100 border border-green-200'
+					} disabled:opacity-50 disabled:cursor-not-allowed`}
 				>
-					{askStatusUpdateState !== 'inProgress' ? (
-						<span className="inline-block">
-							{props.ask.status === 'visible' ? 'Hide' : 'Unhide'}
-						</span>
-					) : (
-						<span>Updating...</span>
-					)}
+					{askStatusUpdateState === 'inProgress' 
+						? 'Updating...' 
+						: props.ask.status === 'visible' ? 'Hide' : 'Unhide'}
 				</button>
 			</td>
 		</tr>

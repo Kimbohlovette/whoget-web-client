@@ -33,44 +33,45 @@ const Users = () => {
 
 	return (
 		<div>
+			<div className="mb-8">
+				<h1 className="text-3xl font-bold text-gray-800 mb-2">Users</h1>
+				<p className="text-gray-600">Manage and monitor platform users</p>
+			</div>
+
 			{!data && !isLoading ? (
-				<button>Refresh Page</button>
+				<div className="flex flex-col items-center justify-center py-16">
+					<p className="text-gray-500 mb-4">Failed to load users</p>
+					<button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+						Refresh Page
+					</button>
+				</div>
 			) : (
 				!isLoading && (
-					<div className="my-16">
-						<table className="table-auto my-5 [&>*]:divide-y w-full">
-							<thead>
-								<tr className="text-sm sm:text-base [&>*]:py-1 text-slate-800 text-left">
-									<th>Name</th>
-									<th className="hidden sm:table-cell">
-										Phone number
-									</th>
-									<th className="hidden md:table-cell">
-										Location
-									</th>
-									<th className="hidden lg:table-cell">
-										No. of Asks
-									</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tbody className="text-sm">
-								{data?.map(
-									(
-										user: any,
-										key: React.Key | null | undefined
-									) => (
+					<div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+						<div className="overflow-x-auto">
+							<table className="w-full">
+								<thead className="bg-gray-50 border-b border-gray-200">
+									<tr className="text-sm font-semibold text-gray-700">
+										<th className="text-left py-4 px-6">User</th>
+										<th className="text-left py-4 px-6 hidden sm:table-cell">Phone</th>
+										<th className="text-left py-4 px-6 hidden md:table-cell">Location</th>
+										<th className="text-left py-4 px-6 hidden lg:table-cell">Asks</th>
+										<th className="text-left py-4 px-6">Status</th>
+									</tr>
+								</thead>
+								<tbody className="divide-y divide-gray-100">
+									{data?.map((user: any, key: React.Key | null | undefined) => (
 										<User key={key} user={user} />
-									)
-								)}
-							</tbody>
-						</table>
+									))}
+								</tbody>
+							</table>
+						</div>
 					</div>
 				)
 			)}
 			{isLoading && (
-				<div className="flex justify-center">
-					<ImSpinner8 className="text-secondary-400 text-xl animate-spin text-center" />
+				<div className="flex justify-center py-16">
+					<ImSpinner8 className="text-blue-600 text-3xl animate-spin" />
 				</div>
 			)}
 		</div>
@@ -118,52 +119,50 @@ const User = (props: { user: any }) => {
 	};
 	return (
 		<tr
-			className="text-slate-600 py-5 hover:bg-slate-200 cursor-pointer"
+			className="hover:bg-gray-50 transition-colors cursor-pointer"
 			onClick={() => {
 				navigation.push(`/users/${props.user.id}`);
 			}}
 		>
-			<td>
-				<div className="max-w-xs py-5 pl-2">
-					<div className="flex flex-row gap-x-2 items-center">
-						<div className="h-10 aspect-square rounded-full bg-slate-50 border overflow-hidden">
-							<Image
-								width={200}
-								height={100}
-								src={props.user.profileImage}
-								className="h-full aspect-square object-center object-cover"
-								alt=""
-							/>
-						</div>
-						<div>{props.user.name}</div>
+			<td className="py-4 px-6">
+				<div className="flex items-center gap-3">
+					<div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 overflow-hidden ring-2 ring-gray-100">
+						<Image
+							width={48}
+							height={48}
+							src={props.user.profileImage}
+							className="h-full w-full object-cover"
+							alt={props.user.name}
+						/>
 					</div>
+					<div className="font-medium text-gray-800">{props.user.name}</div>
 				</div>
 			</td>
-			<td className="hidden sm:table-cell">
-				<div className="py-5">{props.user.phoneNumber}</div>
+			<td className="py-4 px-6 text-gray-600 hidden sm:table-cell">
+				{props.user.phoneNumber}
 			</td>
-			<td className="hidden md:table-cell">
-				<div className="py-5">{props.user.location || 'Buea'}</div>
+			<td className="py-4 px-6 text-gray-600 hidden md:table-cell">
+				{props.user.location || 'Buea'}
 			</td>
-			<td className="hidden sm:table-cell">
-				<div className="py-5">2</div>
+			<td className="py-4 px-6 text-gray-600 hidden lg:table-cell">
+				<span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+					2
+				</span>
 			</td>
-
-			<td className="relative z-50">
+			<td className="py-4 px-6">
 				<button
 					disabled={isUpdating}
-					onClick={handleUpdateStatus}
-					className={
+					onClick={(e) => {
+						e.stopPropagation();
+						handleUpdateStatus();
+					}}
+					className={`px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
 						userStatus === 'active'
-							? 'z-50 py-1 px-4 rounded-md border border-primary-500 text-primary-600 text-sm font-medium'
-							: 'py-1 px-4 rounded-md border-primary-500 bg-primary-500 text-sm text-white font-medium'
-					}
+							? 'bg-red-50 text-red-600 hover:bg-red-100 border border-red-200'
+							: 'bg-green-50 text-green-600 hover:bg-green-100 border border-green-200'
+					} disabled:opacity-50 disabled:cursor-not-allowed`}
 				>
-					{!isUpdating
-						? props.user.status === 'active'
-							? 'Ban'
-							: 'Unband'
-						: 'Updating'}
+					{isUpdating ? 'Updating...' : userStatus === 'active' ? 'Ban' : 'Unban'}
 				</button>
 			</td>
 		</tr>

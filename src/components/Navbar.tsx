@@ -10,89 +10,85 @@ const Navbar = () => {
 	const [showDropdownMenu, setShowDropdownMenu] = useState(false);
 	const [showProfile, setShowProfile] = useState(false);
 	return (
-		<header className="pt-4 pb-8 px-4 flex flex-row items-center justify-between gap-4 border-b">
-			<div className="flex-1 flex flex-row items-center gap-4">
+		<header className="bg-white rounded-xl shadow-sm border border-gray-200 px-6 py-4 mb-6 flex items-center justify-between gap-4">
+			<div className="flex-1 flex items-center gap-4">
 				<div className="relative">
 					<button
-						className="md:hidden"
-						onClick={() => {
-							setShowDropdownMenu((state) => !state);
-						}}
+						className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+						onClick={() => setShowDropdownMenu((state) => !state)}
 					>
-						<HiMenu className="text-2xl" />
+						<HiMenu className="text-2xl text-gray-700" />
 					</button>
 					{showDropdownMenu && (
-						<div className="bg-white px-8 py-5 border rounded-md absolute top-10 z-50 min-w-[200px]">
-							<nav className="py-4">
-								<ul className="flex flex-col gap-4">
-									<Link
-										href={'/'}
-										className="active:font-semibold"
-									>
-										<li>Overview</li>
+						<div className="bg-white shadow-lg border border-gray-200 rounded-xl absolute top-14 z-50 min-w-[200px] overflow-hidden">
+							<nav className="py-2">
+								<ul className="flex flex-col">
+									<Link href={'/'} className="px-4 py-3 hover:bg-gray-50 transition-colors">
+										<li className="text-gray-700">Overview</li>
 									</Link>
-									<Link href={'/users'}>
-										<li>Users</li>
+									<Link href={'/users'} className="px-4 py-3 hover:bg-gray-50 transition-colors">
+										<li className="text-gray-700">Users</li>
 									</Link>
-									<Link href={'/asks'}>
-										<li>Asks</li>
+									<Link href={'/asks'} className="px-4 py-3 hover:bg-gray-50 transition-colors">
+										<li className="text-gray-700">Asks</li>
 									</Link>
 								</ul>
 							</nav>
 						</div>
 					)}
 				</div>
-				<div className="flex justify-start items-center flex-1 gap-2 border bg-white rounded-md overflow-hidden">
-					<HiOutlineMagnifyingGlass className="ml-4" />
+				<div className="flex items-center flex-1 gap-3 border border-gray-300 bg-gray-50 rounded-lg px-4 py-2.5 focus-within:border-blue-500 focus-within:bg-white transition-all">
+					<HiOutlineMagnifyingGlass className="text-gray-400 text-xl" />
 					<input
 						type="search"
-						className="outline-none px-2 py-2 min-w-0 w-full"
-						placeholder="Type search"
+						className="outline-none bg-transparent w-full text-gray-700 placeholder:text-gray-400"
+						placeholder="Search..."
 					/>
 				</div>
 			</div>
 			<div className="md:hidden relative">
 				<button
-					onClick={() => {
-						setShowProfile((state) => !state);
-					}}
+					onClick={() => setShowProfile((state) => !state)}
+					className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
 				>
-					<AiOutlineUser className="text-2xl" />
+					<AiOutlineUser className="text-2xl text-gray-700" />
 				</button>
 				{showProfile && (
-					<div className="bg-white px-8 py-5 border absolute top-10 right-0 min-w-max z-50 rounded-md">
-						<nav className="py-4 text-primary-500 font-bold">
-							<ul className="flex flex-col gap-4">
-								<Link
-									href={'/'}
-									className="active:font-semibold"
-								>
-									<li className="text-primary-500 font-bold">
-										Your profile
-									</li>
+					<div className="bg-white shadow-lg border border-gray-200 rounded-xl absolute top-14 right-0 min-w-max z-50 overflow-hidden">
+						<nav className="py-2">
+							<ul className="flex flex-col">
+								<Link href={'/'} className="px-6 py-3 hover:bg-gray-50 transition-colors">
+									<li className="text-blue-600 font-semibold">Your profile</li>
 								</Link>
-								<Link href={'/users'}>
-									<li>Notifications</li>
+								<Link href={'/users'} className="px-6 py-3 hover:bg-gray-50 transition-colors">
+									<li className="text-gray-700">Notifications</li>
 								</Link>
-								<Link href={'/asks'}>
-									<li>Messages</li>
+								<Link href={'/asks'} className="px-6 py-3 hover:bg-gray-50 transition-colors">
+									<li className="text-gray-700">Messages</li>
 								</Link>
-								<Link href={'/asks'}>
-									<li className="border-t pt-4">Logout</li>
+								<Link href={'/asks'} className="px-6 py-3 border-t border-gray-200 hover:bg-gray-50 transition-colors">
+									<li className="text-red-600">Logout</li>
 								</Link>
 							</ul>
 						</nav>
 					</div>
 				)}
 			</div>
-			<div className="hidden md:flex flex-1 flex-row justify-evenly">
-				<div className="flex flex-row items-center gap-4">
-					<IoMdNotificationsOutline />
-					<MdOutlineMailOutline />
+			<div className="hidden md:flex items-center gap-6">
+				<div className="flex items-center gap-4">
+					<button className="p-2 hover:bg-gray-100 rounded-lg transition-colors relative">
+						<IoMdNotificationsOutline className="text-2xl text-gray-600" />
+						<span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+					</button>
+					<button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+						<MdOutlineMailOutline className="text-2xl text-gray-600" />
+					</button>
 				</div>
-				<div className="flex flex-row items-center justify-center gap-2 place-content-end">
-					<AiOutlineUser className="text-xl" />
-					<p>Eyong Vanisiah</p>
+				<div className="flex items-center gap-3 pl-6 border-l border-gray-200">
+					<div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+						<AiOutlineUser className="text-xl text-white" />
+					</div>
+					<p className="text-gray-700 font-medium">Eyong Vanisiah</p>
 				</div>
 			</div>
 		</header>

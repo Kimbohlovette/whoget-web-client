@@ -130,12 +130,12 @@ const AskDetails = () => {
 								<button
 									disabled={isUpdating}
 									onClick={handleAskStatusUpdates}
-									className="flex flex-row gap-x-2 py-1 px-4 rounded-md border border-primary-500 bg-primary-500 text-white  text-xs font-medium"
+									className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-primary-500 bg-primary-500 text-white text-sm font-medium hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
 								>
 									{isUpdating ? (
 										'Updating...'
 									) : (
-										<span className="inline-block">
+										<span>
 											{askResData.data.status ===
 											'visible'
 												? 'Hide'
